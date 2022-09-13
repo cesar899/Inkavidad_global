@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+//rutas que no necesitan token
+Route::controller(UserController::class)->group(
+	function($router) {
+		Route::post('register', 'register');
+		Route::post('login', 'login');
+});
+
+//rutas que si necesitan token
+Route::group([
+ 	'middleware' => ['jwt.verify'],
+], function ($router) {
+	Route::post('/logout', [UserController::class, 'logout']);
 });
