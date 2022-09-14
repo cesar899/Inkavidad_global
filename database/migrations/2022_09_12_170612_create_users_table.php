@@ -27,7 +27,7 @@ return new class extends Migration
                   ->nullOnDelete();
             $table->bigInteger('countrie_id')->nullable();
             $table->bigInteger('prefix_id')->nullable();
-            $table->tinyInteger('type_dni');
+            $table->tinyInteger('type_dni')->nullable();
             $table->string('dni')->nullable();
             $table->string('phone')->nullable();
             $table->string('direction')->nullable();
