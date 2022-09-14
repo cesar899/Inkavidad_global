@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\PasswordResetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,14 +16,22 @@ use App\Http\Controllers\UserController;
 |
 */
 
-//rutas que no necesitan token
+//rutas sin auth
 Route::controller(UserController::class)->group(
 	function($router) {
 		Route::post('register', 'register');
 		Route::post('login', 'login');
 });
 
-//rutas que si necesitan token
+//rutas de restablecimineto de contraseña
+Route::controller(PasswordResetController::class)->group(
+	function($router) {
+		Route::post('password/email', 'forgotPassword');
+		Route::post('password/code/check', 'codeCheck');
+		Route::post('password/reset', 'resetPassword');
+});
+
+//rutas que necesitan token
 Route::group([
  	'middleware' => ['jwt.verify'],
 ], function ($router) {
