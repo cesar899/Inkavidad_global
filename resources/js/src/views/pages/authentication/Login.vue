@@ -47,7 +47,7 @@
             Please sign-in to your account and start the adventure
           </b-card-text>
 
-          <b-alert
+          <!-- <b-alert
             variant="primary"
             show
           >
@@ -66,7 +66,7 @@
               class="position-absolute"
               style="top: 10; right: 10;"
             />
-          </b-alert>
+          </b-alert> -->
 
           <!-- form -->
           <validation-observer
@@ -75,7 +75,7 @@
           >
             <b-form
               class="auth-login-form mt-2"
-              @submit.prevent="login"
+              @submit.stop.prevent="login"
             >
               <!-- email -->
               <b-form-group
@@ -90,7 +90,7 @@
                 >
                   <b-form-input
                     id="login-email"
-                    v-model="userEmail"
+                    v-model="data.email"
                     :state="errors.length > 0 ? false:null"
                     name="login-email"
                     placeholder="john@example.com"
@@ -119,7 +119,7 @@
                   >
                     <b-form-input
                       id="login-password"
-                      v-model="password"
+                      v-model="data.password"
                       :state="errors.length > 0 ? false:null"
                       class="form-control-merge"
                       :type="passwordFieldType"
@@ -237,6 +237,7 @@ import store from '@/store/index'
 import { getHomeRouteForLoggedInUser } from '@/auth/utils'
 
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import axios from 'axios'
 
 export default {
   directives: {
@@ -265,8 +266,10 @@ export default {
   data() {
     return {
       status: '',
-      password: 'admin',
-      userEmail: 'admin@demo.com',
+      data: {
+        password: '',
+        email: '',
+      },     
       sideImg: require('@/assets/images/pages/login-v2.svg'),
 
       // validation rules
@@ -288,42 +291,18 @@ export default {
     },
   },
   methods: {
-    login() {
-      this.$refs.loginForm.validate().then(success => {
+    async login() {
+       this.$refs.loginForm.validate().then(async success => {
         if (success) {
-          useJwt
-            .login({
-              email: this.userEmail,
-              password: this.password,
-            })
-            .then(response => {
-              const { userData } = response.data
-              useJwt.setToken(response.data.accessToken)
-              useJwt.setRefreshToken(response.data.refreshToken)
-              localStorage.setItem('userData', JSON.stringify(userData))
-              this.$ability.update(userData.ability)
+ 
+          await this.$http.post('api/login', this.data)
+          .then((res) => {
+            sessionStorage.setItem('jwt', res.data.token);
+            this.$router.push('/dashboard/analytics');
+          }).catch((error) => {       
+            this.$refs.loginForm.setErrors(error.res);
+          })
 
-              // ? This is just for demo purpose as well.
-              // ? Because we are showing eCommerce app's cart items count in navbar
-              this.$store.commit('app-ecommerce/UPDATE_CART_ITEMS_COUNT', userData.extras.eCommerceCartItemsCount)
-
-              // ? This is just for demo purpose. Don't think CASL is role based in this case, we used role in if condition just for ease
-              this.$router.replace(getHomeRouteForLoggedInUser(userData.role)).then(() => {
-                this.$toast({
-                  component: ToastificationContent,
-                  position: 'top-right',
-                  props: {
-                    title: `Welcome ${userData.fullName || userData.username}`,
-                    icon: 'CoffeeIcon',
-                    variant: 'success',
-                    text: `You have successfully logged in as ${userData.role}. Now you can start to explore!`,
-                  },
-                })
-              })
-            })
-            .catch(error => {
-              this.$refs.loginForm.setErrors(error.response.data.error)
-            })
         }
       })
     },

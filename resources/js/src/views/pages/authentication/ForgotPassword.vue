@@ -42,14 +42,14 @@
             Forgot Password? 🔒
           </b-card-title>
           <b-card-text class="mb-2">
-            Enter your email and we'll send you instructions to reset your password
+            Enter your email and we'll send you instructions to reset your password.
           </b-card-text>
 
           <!-- form -->
-          <validation-observer ref="simpleRules">
+          <validation-observer ref="simpleRules" v-if="loader">
             <b-form
               class="auth-forgot-password-form mt-2"
-              @submit.prevent="validationForm"
+              @submit.stop.prevent="validationEmail"
             >
               <b-form-group
                 label="Email"
@@ -62,7 +62,7 @@
                 >
                   <b-form-input
                     id="forgot-password-email"
-                    v-model="userEmail"
+                    v-model="data.email"
                     :state="errors.length > 0 ? false:null"
                     name="forgot-password-email"
                     placeholder="john@example.com"
@@ -80,6 +80,119 @@
               </b-button>
             </b-form>
           </validation-observer>
+
+
+          <validation-observer ref="simpleRules" v-if="loader2">
+            <b-form
+              class="auth-forgot-password-form mt-2"
+              @submit.stop.prevent="validationToken"
+            >
+              <b-form-group
+                label="Code"
+                label-for="forgot-password-email"
+              >
+                <validation-provider
+                  #default="{ errors }"
+                  name="Code"
+                  rules="required"
+                >
+                  <b-form-input
+                    id="forgot-password-email"
+                    v-model="auth.token"
+                    :state="errors.length > 0 ? false:null"
+                    name="forgot-password-email"
+                    placeholder="00000"
+                  />
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+
+              <b-button
+                type="submit"
+                variant="primary"
+                block
+              >
+                Check code
+              </b-button>
+            </b-form>
+          </validation-observer>
+
+          <validation-observer ref="simpleRules" v-if="loader3">
+            <b-form
+              class="auth-forgot-password-form mt-2"
+              @submit.stop.prevent="resetPassword"
+            >
+              <b-form-group
+                label="Code"
+                label-for="forgot-password-email"
+              >
+                <validation-provider
+                  #default="{ errors }"
+                  name="code"
+                  rules="required"
+                >
+                  <b-form-input
+                    id="forgot-password-email"
+                    v-model="reset.token"
+                    :state="errors.length > 0 ? false:null"
+                    name="forgot-password-email"
+                    placeholder="00000"
+                  />
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+
+              <b-form-group
+                label="New password"
+                label-for="forgot-password-email"
+              >
+                <validation-provider
+                  #default="{ errors }"
+                  name="newPassword"
+                  rules="required"
+                >
+                  <b-form-input
+                    id="forgot-password-email"
+                    v-model="reset.password"
+                    :state="errors.length > 0 ? false:null"
+                    name="forgot-password-email"
+                    placeholder="password"
+                  />
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+
+              <b-form-group
+                label="Confirm password"
+                label-for="forgot-password-email"
+              >
+                <validation-provider
+                  #default="{ errors }"
+                  name="confirmPassword"
+                  rules="required"
+                >
+                  <b-form-input
+                    id="forgot-password-email"
+                    v-model="reset.password_confirmation"
+                    :state="errors.length > 0 ? false:null"
+                    name="forgot-password-email"
+                    placeholder="Confirm password"
+                  />
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+
+              <b-button
+                type="submit"
+                variant="primary"
+                block
+              >
+                Reset Password
+              </b-button>
+            </b-form>
+          </validation-observer>
+
+
 
           <p class="text-center mt-2">
             <b-link :to="{name:'auth-login'}">
@@ -120,7 +233,20 @@ export default {
   },
   data() {
     return {
-      userEmail: '',
+      data: {
+        email: '',
+      },
+      auth: {
+        token: '',
+      },
+      reset: {
+        token: '',
+        password: '',
+        password_confirmation: '',
+      },
+      loader: true,
+      loader2: false,
+      loader3: false,     
       sideImg: require('@/assets/images/pages/forgot-password-v2.svg'),
       // validation
       required,
@@ -138,20 +264,97 @@ export default {
     },
   },
   methods: {
-    validationForm() {
-      this.$refs.simpleRules.validate().then(success => {
+    async validationEmail() {
+      this.$refs.simpleRules.validate().then(async success => {
         if (success) {
-          this.$toast({
-            component: ToastificationContent,
-            props: {
-              title: 'This is for UI purpose only.',
-              icon: 'EditIcon',
-              variant: 'success',
-            },
+          await this.$http.post('api/password/email', this.data)
+          .then((res) => {
+            this.loader = false
+            this.loader2 = true
+            this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: res.data.Msg,
+                icon: 'EditIcon',
+                variant: 'success',
+              },
+            })
+          })
+          .catch(error => {
+            this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: 'Incorrect data, validate it again',
+                icon: 'XIcon',
+                variant: 'warning',
+              },
+            })
           })
         }
       })
     },
+
+    async validationToken() {
+      this.$refs.simpleRules.validate().then(async success => {
+        if (success) {
+          await this.$http.post('api/password/code/check', this.auth)
+          .then((res) => {
+            this.loader = false
+            this.loader2 = false
+            this.loader3 = true
+            this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: res.data.Msg,
+                icon: 'EditIcon',
+                variant: 'success',
+              },
+            })
+          })
+          .catch((error) => {
+            this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: 'Incorrect data, validate it again',
+                icon: 'XIcon',
+                variant: 'warning',
+              },
+            })
+          })         
+        }
+      })
+    },
+
+    async resetPassword() {
+      this.$refs.simpleRules.validate().then(async success => {
+        if (success) {
+          await this.$http.post('api/password/reset', this.reset)
+          .then((res) => {
+            this.loader = true
+            this.loader2 = false
+            this.loader3 = false
+            this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: res.data.Msg,
+                icon: 'EditIcon',
+                variant: 'success',
+              },
+            })
+          })
+          .catch((error) => {
+            this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: 'Incorrect data, validate it again',
+                icon: 'XIcon',
+                variant: 'warning',
+              },
+            })
+          })
+        }
+      })
+    }
   },
 }
 </script>
