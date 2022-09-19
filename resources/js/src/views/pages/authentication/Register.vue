@@ -52,25 +52,46 @@
           >
             <b-form
               class="auth-register-form mt-2"
-              @submit.prevent="register"
+              @submit.stop.prevent="registerUser"
             >
               <!-- username -->
               <b-form-group
-                label="Username"
+                label="Name"
                 label-for="register-username"
               >
                 <validation-provider
                   #default="{ errors }"
-                  name="Username"
-                  vid="username"
+                  name="Name"
+                  vid="Name"
+                  rules="required"
+                >
+                  <b-form-input
+                    id="register-name"
+                    v-model="register.name"
+                    name="register-name"
+                    :state="errors.length > 0 ? false:null"
+                    placeholder="Name"
+                  />
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+
+              <b-form-group
+                label="Last Name"
+                label-for="register-lastname"
+              >
+                <validation-provider
+                  #default="{ errors }"
+                  name="Lastname"
+                  vid="lastname"
                   rules="required"
                 >
                   <b-form-input
                     id="register-username"
-                    v-model="username"
+                    v-model="register.last_name"
                     name="register-username"
                     :state="errors.length > 0 ? false:null"
-                    placeholder="johndoe"
+                    placeholder="Last name"
                   />
                   <small class="text-danger">{{ errors[0] }}</small>
                 </validation-provider>
@@ -89,7 +110,7 @@
                 >
                   <b-form-input
                     id="register-email"
-                    v-model="userEmail"
+                    v-model="register.email"
                     name="register-email"
                     :state="errors.length > 0 ? false:null"
                     placeholder="john@example.com"
@@ -115,11 +136,46 @@
                   >
                     <b-form-input
                       id="register-password"
-                      v-model="password"
+                      v-model="register.password"
                       class="form-control-merge"
                       :type="passwordFieldType"
                       :state="errors.length > 0 ? false:null"
                       name="register-password"
+                      placeholder="············"
+                    />
+                    <b-input-group-append is-text>
+                      <feather-icon
+                        :icon="passwordToggleIcon"
+                        class="cursor-pointer"
+                        @click="togglePasswordVisibility"
+                      />
+                    </b-input-group-append>
+                  </b-input-group>
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+
+              <b-form-group
+                label-for="register-password"
+                label="Password"
+              >
+                <validation-provider
+                  #default="{ errors }"
+                  name="PasswordC"
+                  vid="passwordC"
+                  rules="required"
+                >
+                  <b-input-group
+                    class="input-group-merge"
+                    :class="errors.length > 0 ? 'is-invalid':null"
+                  >
+                    <b-form-input
+                      id="register-passwordC"
+                      v-model="register.password_confirmation"
+                      class="form-control-merge"
+                      :type="passwordFieldType"
+                      :state="errors.length > 0 ? false:null"
+                      name="register-passwordC"
                       placeholder="············"
                     />
                     <b-input-group-append is-text>
@@ -206,6 +262,7 @@
 <script>
 /* eslint-disable global-require */
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 import VuexyLogo from '@core/layouts/components/Logo.vue'
 import {
   BRow,
@@ -251,9 +308,13 @@ export default {
   data() {
     return {
       status: '',
-      username: '',
-      userEmail: '',
-      password: '',
+      register: {
+        name: '',
+        last_name: '',
+        email: '',
+        password: '',
+        password_confirmation: '',
+      },
       sideImg: require('@/assets/images/pages/register-v2.svg'),
       // validation
       required,
@@ -274,25 +335,31 @@ export default {
     },
   },
   methods: {
-    register() {
-      this.$refs.registerForm.validate().then(success => {
+    async registerUser() {
+      this.$refs.registerForm.validate().then(async success => {
         if (success) {
-          useJwt
-            .register({
-              username: this.username,
-              email: this.userEmail,
-              password: this.password,
+          await this.$http.post('api/register', this.register)
+          .then((res) => {
+            this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: res.data,
+                icon: 'EditIcon',
+                variant: 'success',
+              },
             })
-            .then(response => {
-              useJwt.setToken(response.data.accessToken)
-              useJwt.setRefreshToken(response.data.refreshToken)
-              localStorage.setItem('userData', JSON.stringify(response.data.userData))
-              this.$ability.update(response.data.userData.ability)
-              this.$router.push('/')
+            this.$router.push('login/')
+          })
+          .catch(error => {
+            this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: 'Incorrect data, validate it again',
+                icon: 'XIcon',
+                variant: 'warning',
+              },
             })
-            .catch(error => {
-              this.$refs.registerForm.setErrors(error.response.data.error)
-            })
+          })
         }
       })
     },

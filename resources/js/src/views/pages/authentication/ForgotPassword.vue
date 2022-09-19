@@ -123,61 +123,71 @@
               @submit.stop.prevent="resetPassword"
             >
               <b-form-group
-                label="Code"
-                label-for="forgot-password-email"
+                label-for="password"
+                label="Password"
               >
                 <validation-provider
                   #default="{ errors }"
-                  name="code"
+                  name="Password"
+                  vid="password"
                   rules="required"
                 >
-                  <b-form-input
-                    id="forgot-password-email"
-                    v-model="reset.token"
-                    :state="errors.length > 0 ? false:null"
-                    name="forgot-password-email"
-                    placeholder="00000"
-                  />
+                  <b-input-group
+                    class="input-group-merge"
+                    :class="errors.length > 0 ? 'is-invalid':null"
+                  >
+                    <b-form-input
+                      id="password"
+                      v-model="reset.password"
+                      class="form-control-merge"
+                      :type="passwordFieldType"
+                      :state="errors.length > 0 ? false:null"
+                      name="password"
+                      placeholder="············"
+                    />
+                    <b-input-group-append is-text>
+                      <feather-icon
+                        :icon="passwordToggleIcon"
+                        class="cursor-pointer"
+                        @click="togglePasswordVisibility"
+                      />
+                    </b-input-group-append>
+                  </b-input-group>
                   <small class="text-danger">{{ errors[0] }}</small>
                 </validation-provider>
               </b-form-group>
 
               <b-form-group
-                label="New password"
-                label-for="forgot-password-email"
+                label-for="password"
+                label="Password"
               >
                 <validation-provider
                   #default="{ errors }"
-                  name="newPassword"
+                  name="PasswordC"
+                  vid="passwordC"
                   rules="required"
                 >
-                  <b-form-input
-                    id="forgot-password-email"
-                    v-model="reset.password"
-                    :state="errors.length > 0 ? false:null"
-                    name="forgot-password-email"
-                    placeholder="password"
-                  />
-                  <small class="text-danger">{{ errors[0] }}</small>
-                </validation-provider>
-              </b-form-group>
-
-              <b-form-group
-                label="Confirm password"
-                label-for="forgot-password-email"
-              >
-                <validation-provider
-                  #default="{ errors }"
-                  name="confirmPassword"
-                  rules="required"
-                >
-                  <b-form-input
-                    id="forgot-password-email"
-                    v-model="reset.password_confirmation"
-                    :state="errors.length > 0 ? false:null"
-                    name="forgot-password-email"
-                    placeholder="Confirm password"
-                  />
+                  <b-input-group
+                    class="input-group-merge"
+                    :class="errors.length > 0 ? 'is-invalid':null"
+                  >
+                    <b-form-input
+                      id="passwordC"
+                      v-model="reset.password_confirmation"
+                      class="form-control-merge"
+                      :type="passwordFieldType"
+                      :state="errors.length > 0 ? false:null"
+                      name="passwordC"
+                      placeholder="············"
+                    />
+                    <b-input-group-append is-text>
+                      <feather-icon
+                        :icon="passwordToggleIcon"
+                        class="cursor-pointer"
+                        @click="togglePasswordVisibility"
+                      />
+                    </b-input-group-append>
+                  </b-input-group>
                   <small class="text-danger">{{ errors[0] }}</small>
                 </validation-provider>
               </b-form-group>
@@ -214,6 +224,7 @@ import { BRow, BCol, BLink, BCardTitle, BCardText, BImg, BForm, BFormGroup, BFor
 import { required, email } from '@validations'
 import store from '@/store/index'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import { togglePasswordVisibility } from '@core/mixins/ui/forms'
 
 export default {
   components: {
@@ -231,6 +242,7 @@ export default {
     ValidationProvider,
     ValidationObserver,
   },
+  mixins: [togglePasswordVisibility],
   data() {
     return {
       data: {
@@ -254,6 +266,9 @@ export default {
     }
   },
   computed: {
+    passwordToggleIcon() {
+      return this.passwordFieldType === 'password' ? 'EyeIcon' : 'EyeOffIcon'
+    },
     imgUrl() {
       if (store.state.appConfig.layout.skin === 'dark') {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -302,6 +317,9 @@ export default {
             this.loader = false
             this.loader2 = false
             this.loader3 = true
+
+            this.reset.token = this.auth.token
+
             this.$toast({
               component: ToastificationContent,
               props: {
