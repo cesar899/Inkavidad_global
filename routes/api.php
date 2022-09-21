@@ -16,12 +16,10 @@ use App\Http\Controllers\Auth\PasswordResetController;
 |
 */
 
-//rutas sin auth
-Route::controller(UserController::class)->group(
-	function($router) {
-		Route::post('register', 'register');
-		Route::post('login', 'login');
-});
+//rutas sin token
+
+//login
+Route::post('login', [UserController::class, 'login']);
 
 //rutas de restablecimineto de contraseña
 Route::controller(PasswordResetController::class)->group(
@@ -31,9 +29,17 @@ Route::controller(PasswordResetController::class)->group(
 		Route::post('password/reset', 'resetPassword');
 });
 
-//rutas que necesitan token
+//rutas con token
 Route::group([
  	'middleware' => ['jwt.verify'],
 ], function ($router) {
-	Route::post('/logout', [UserController::class, 'logout']);
+
+	Route::controller(UserController::class)->group(
+		function($router) {
+			Route::post('/logout', 'logout');
+			Route::post('/register/new/user', 'registerNewUser');
+			Route::put('/edit/user/{id}', 'editUser');
+			Route::get('/users', 'showAllUsers');
+			Route::get('/user/{id}', 'showUser');
+	});
 });
