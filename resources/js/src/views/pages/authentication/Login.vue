@@ -298,6 +298,7 @@ export default {
           await this.$http.post('api/login', this.data)
           .then((res) => {
             sessionStorage.setItem('jwt', res.data.token);
+            sessionStorage.setItem('rol', res.data.user.rol);
             this.$router.push('/dashboard/analytics');
           }).catch((error) => {       
             this.$refs.loginForm.setErrors(error.res);

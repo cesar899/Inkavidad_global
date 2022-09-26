@@ -65,7 +65,7 @@ class UserController extends Controller
 							      'confirmed',],
 				'rol'         => ['required',
 								  'integer', 
-								  'regex:/[0-4]/',],
+								  'regex:/[1-5]/',],
 	 		]);
 	 		//guardando datos de nuevo usuario
 	 		$newUser = new User([
@@ -125,7 +125,7 @@ class UserController extends Controller
 				'last_name'   => 'string',
 				'email'       => 'email',
 				'rol'         => ['integer', 
-								  'regex:/[0-4]/',],
+								  'regex:/[1-5]/',],
 	 		]);
 	 		//guardando datos actualizados
 	 		$updateUser = User::find($id);

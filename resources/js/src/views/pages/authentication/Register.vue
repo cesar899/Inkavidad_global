@@ -67,7 +67,6 @@
                 >
                   <b-form-input
                     id="register-name"
-                    v-model="register.name"
                     name="register-name"
                     :state="errors.length > 0 ? false:null"
                     placeholder="Name"
@@ -88,7 +87,6 @@
                 >
                   <b-form-input
                     id="register-username"
-                    v-model="register.last_name"
                     name="register-username"
                     :state="errors.length > 0 ? false:null"
                     placeholder="Last name"
@@ -110,7 +108,6 @@
                 >
                   <b-form-input
                     id="register-email"
-                    v-model="register.email"
                     name="register-email"
                     :state="errors.length > 0 ? false:null"
                     placeholder="john@example.com"
@@ -136,7 +133,6 @@
                   >
                     <b-form-input
                       id="register-password"
-                      v-model="register.password"
                       class="form-control-merge"
                       :type="passwordFieldType"
                       :state="errors.length > 0 ? false:null"
@@ -171,7 +167,6 @@
                   >
                     <b-form-input
                       id="register-passwordC"
-                      v-model="register.password_confirmation"
                       class="form-control-merge"
                       :type="passwordFieldType"
                       :state="errors.length > 0 ? false:null"
@@ -308,13 +303,13 @@ export default {
   data() {
     return {
       status: '',
-      register: {
-        name: '',
-        last_name: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
-      },
+      // register: {
+      //   name: '',
+      //   last_name: '',
+      //   email: '',
+      //   password: '',
+      //   password_confirmation: '',
+      // },
       sideImg: require('@/assets/images/pages/register-v2.svg'),
       // validation
       required,
@@ -335,34 +330,34 @@ export default {
     },
   },
   methods: {
-    async registerUser() {
-      this.$refs.registerForm.validate().then(async success => {
-        if (success) {
-          await this.$http.post('api/register', this.register)
-          .then((res) => {
-            this.$toast({
-              component: ToastificationContent,
-              props: {
-                title: res.data,
-                icon: 'EditIcon',
-                variant: 'success',
-              },
-            })
-            this.$router.push('login/')
-          })
-          .catch(error => {
-            this.$toast({
-              component: ToastificationContent,
-              props: {
-                title: 'Incorrect data, validate it again',
-                icon: 'XIcon',
-                variant: 'warning',
-              },
-            })
-          })
-        }
-      })
-    },
+    // async registerUser() {
+    //   this.$refs.registerForm.validate().then(async success => {
+    //     if (success) {
+    //       await this.$http.post('api/register', this.register)
+    //       .then((res) => {
+    //         this.$toast({
+    //           component: ToastificationContent,
+    //           props: {
+    //             title: res.data,
+    //             icon: 'EditIcon',
+    //             variant: 'success',
+    //           },
+    //         })
+    //         this.$router.push('login/')
+    //       })
+    //       .catch(error => {
+    //         this.$toast({
+    //           component: ToastificationContent,
+    //           props: {
+    //             title: 'Incorrect data, validate it again',
+    //             icon: 'XIcon',
+    //             variant: 'warning',
+    //           },
+    //         })
+    //       })
+    //     }
+    //   })
+    // },
   },
 }
 /* eslint-disable global-require */

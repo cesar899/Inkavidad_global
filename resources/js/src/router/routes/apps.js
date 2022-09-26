@@ -184,10 +184,15 @@ export default [
   // *===============================================---*
   // *--------- USER ---- ---------------------------------------*
   // *===============================================---*
+  // {
+  //   path: '/apps/users/list',
+  //   name: 'apps-users-list',
+  //   component: () => import('@/views/apps/user/users-list/UsersList.vue'),
+  // },
   {
     path: '/apps/users/list',
     name: 'apps-users-list',
-    component: () => import('@/views/apps/user/users-list/UsersList.vue'),
+    component: () => import('@/views/apps/user/users-list/Users.vue'),
   },
   {
     path: '/apps/users/view/:id',
@@ -195,10 +200,20 @@ export default [
     component: () => import('@/views/apps/user/users-view/UsersView.vue'),
   },
   {
-    path: '/apps/users/edit/:id',
-    name: 'apps-users-edit',
-    component: () => import('@/views/apps/user/users-edit/UsersEdit.vue'),
+    path: '/apps/users/create',
+    name: 'apps-users-create',
+    component: () => import('@/views/apps/user/users-create/UserCreate.vue'),
   },
+  {
+    path: '/apps/users/edit',
+    name: 'apps-users-edit',
+    component: () => import('@/views/apps/user/users-edit/EditUser.vue'),
+  },
+  // {
+  //   path: '/apps/users/edit/:id',
+  //   name: 'apps-users-edit',
+  //   component: () => import('@/views/apps/user/users-edit/UsersEdit.vue'),
+  // },
 
   // Invoice
   {
