@@ -9,4 +9,14 @@ export default [
     route: 'second-page',
     icon: 'FileIcon',
   },
+  {
+    title: 'Lotes',
+    route: 'batchs',
+    icon: 'PackageIcon',
+  },
+  {
+    title: 'Proyectos',
+    route: 'projects',
+    icon: 'BriefcaseIcon',
+  },
 ]
