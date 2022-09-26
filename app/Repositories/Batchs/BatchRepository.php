@@ -17,6 +17,11 @@ class BatchRepository
 		return $itemList;
 	}
 
+	public function getBatch($id) {
+		$batch = Batch::find($id);
+		return $batch;
+	}
+
 	public function update($id,$data) {
 		return Batch::where('id' , $id)->update($data);
 	}

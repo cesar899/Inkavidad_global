@@ -7,6 +7,12 @@ export async function getBatchs(context, params = '') {
 	return request;
 }
 
+export async function getBatch(context, batchId ) {
+	const url = BaseUrl.getUrl('api/batchs/' + batchId);
+	const request = await axiosIns.get(url);
+	return request;
+}
+
 export async function save(context, data) {
 	const url = BaseUrl.getUrl('api/batchs');
 	const request = await axiosIns.post(url, data);

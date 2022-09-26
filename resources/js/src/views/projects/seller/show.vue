@@ -11,6 +11,9 @@
 		</template>
 
 		<b-card-group class="d-flex flex-column justify-content-between">
+			<div v-if="groups.length <= 1">
+				<h4>No hay Grupos Disponibles</h4>
+			</div>
 			<b-card v-for="(group, index) in groups" :key="index">
 				<template #header>
 					<h4>{{group.name}}</h4>
@@ -19,19 +22,25 @@
 				<b-card-group class="d-flex" deck>
 
 					<div v-for="(batch, indB) in group.batchs" :key="indB" class="pb-1">
-						<b-card :class="['card__batchs', borderStatus(batch.status)]">
-							<template #header>
-								<h4>{{batch.name}}</h4>
-							</template>
+						
+						<b-link
+							:to="'/batchs/'+ batch.id + '/selection'"
+						>
+							<b-card :class="['card__batchs', borderStatus(batch.status)]">
+								<template #header>
+									<h4>{{batch.name}}</h4>
+								</template>
 
-							<b-card-text>
-								Precio financiado: {{batch.amount_owed}}
-							</b-card-text>
-							<b-card-text>
-								Precio de contado: {{batch.amount}}
-							</b-card-text>
+								<b-card-text>
+									Precio financiado: {{batch.amount_owed}}
+								</b-card-text>
+								<b-card-text>
+									Precio de contado: {{batch.amount}}
+								</b-card-text>
 
-						</b-card>
+							</b-card>
+						</b-link>
+
 					</div>
 
 				</b-card-group>
@@ -46,7 +55,8 @@
 
 <script>
 import {
-	BCard, BCardText, BCardGroup, BFormGroup, BInputGroup, BFormCheckbox, BTooltip, BCardTitle, BImg, BForm, BButton, BFormFile, BModal, BFormCheckboxGroup
+	BCard, BCardText, BCardGroup, BFormGroup, BInputGroup, BFormCheckbox, BTooltip, BCardTitle, BImg, 
+	BForm, BButton, BFormFile, BModal, BFormCheckboxGroup, BLink
 } from 'bootstrap-vue'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
@@ -63,6 +73,7 @@ export default {
 		BButton,
 		BFormFile,
 		BModal,
+		BLink,
 		BCardGroup,
 		BFormCheckboxGroup,
 		BTooltip,

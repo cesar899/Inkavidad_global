@@ -8,6 +8,7 @@ import verticalMenu from './vertical-menu'
 import batchs from './batchs'
 import projects from './projects'
 import groups from './groups'
+import orders from './orders'
 
 Vue.use(Vuex)
 
@@ -18,7 +19,8 @@ export default new Vuex.Store({
     verticalMenu,
     batchs,
     projects,
-    groups
+    groups,
+    orders
   },
   strict: process.env.DEV,
 })

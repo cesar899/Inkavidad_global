@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Repositories\Batchs\BatchRepository;
 use App\Http\Requests\Batchs\StoreRequest;
+use App\Constants\CBatchStatus;
 
 class BatchController extends Controller
 {
@@ -13,10 +15,19 @@ class BatchController extends Controller
     }
 
     public function index(Request $request){
-        $batchs = $this->repository->getBatchs() ;
+        $batchs = $this->repository->getBatchs();
         abort_if( !$batchs, 500 ,'Error del servidor');
         
         return response()->json($batchs, 200);
+    }
+
+    public function show(Request $request){
+        $batch = $this->repository->getBatch($request->batch);
+        info($batch);
+        abort_if( !$batch, 404 ,'No se encontro registro');
+        abort_if( $batch->status != CBatchStatus::BATCH_AVAILABLE, 404 ,'Lote no disponible');
+        
+        return response()->json($batch, 200);
     }
     
     public function store (StoreRequest $request){
