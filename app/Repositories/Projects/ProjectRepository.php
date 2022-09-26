@@ -81,4 +81,10 @@ class ProjectRepository
 		return $itemList;
 	}
 
+	public function validateGroupQuantity($projectId){
+		$item = Project::withCount(['groups as total_groups'])->where('id', $projectId)->first();
+
+		return $item->group_quantity - $item->total_groups > 1;
+	}
+
 }

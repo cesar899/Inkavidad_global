@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Repositories\Groups\GroupRepository;
+use App\Repositories\Projects\ProjectRepository;
 use App\Http\Requests\Groups\StoreRequest;
 
 class GroupController extends Controller
@@ -15,14 +16,18 @@ class GroupController extends Controller
 
     public function index(Request $request){
         $groups = $this->repository->getGroups();
-        abort_if( !$groups, 500 ,'Error del servidor');
+        abort_if( !$groups, 404 ,'No hay Grupos disponibles');
         
         return response()->json($groups, 200);
     }
 
     public function store (StoreRequest $request){
+        $projectRepo = new ProjectRepository(); 
+        $hasGroupSpace = $projectRepo->validateGroupQuantity($request->safe()->only(['project_id']));
+        abort_if( !$hasGroupSpace, 500 ,'Proyecto no acepta mas Grupos' );
+
         $group = $this->repository->create($request->validated());
-       
+        
         return response()->json($group , 200);
     }
 

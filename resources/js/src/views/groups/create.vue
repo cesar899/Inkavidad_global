@@ -130,23 +130,21 @@ export default {
 				if (!validationSuccess)
 					throw new Error('Validacion Fallida');
 
-				this.$store.dispatch('groups/save', groupData).then(({ data }) => {
-					console.log(data)
-					this.$toast({
-						component: ToastificationContent,
-						props: {
-							title: 'Grupo Creado',
-							icon: 'CheckIcon',
-							variant: 'success',
-						},
-					})
-				});
-			} catch (error) {
-				console.log({ error })
+				await this.$store.dispatch('groups/save', groupData);
 				this.$toast({
 					component: ToastificationContent,
 					props: {
-						title: error.message,
+						title: 'Grupo Creado',
+						icon: 'CheckIcon',
+						variant: 'success',
+					},
+				})
+			} catch (error) {
+				const messageError = error.response?.data?.message || error.message;
+				this.$toast({
+					component: ToastificationContent,
+					props: {
+						title: messageError,
 						icon: 'XIcon',
 						variant: 'danger',
 					},
