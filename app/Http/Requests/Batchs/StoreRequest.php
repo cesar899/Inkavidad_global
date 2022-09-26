@@ -24,6 +24,7 @@ class StoreRequest extends FormRequest
      */
     public function rules(){
 		return [
+			'name' => "required",
 			'project_id' => "required",
 			'group_id' => "required",
 			'mts_north' => "required|string",

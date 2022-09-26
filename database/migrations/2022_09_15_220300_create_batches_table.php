@@ -30,7 +30,7 @@ return new class extends Migration
 
             $table->string('amount_owed', 191);
             $table->string('amount', 191);
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->default(1);
 
             $table->foreignId('project_id')
                 ->nullable()

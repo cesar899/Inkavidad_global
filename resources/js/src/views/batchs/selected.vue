@@ -246,7 +246,7 @@ export default {
                     ref_number: this.selectedBatchForm.refNumber,
                     voucher: this.selectedBatchForm.paymentProof ?? '',
                     amount: parseInt(this.selectedBatchForm.startingBalance, 10),
-                    first_name: this.selectedBatchForm.firstName,
+                    name: this.selectedBatchForm.firstName,
                     last_name: this.selectedBatchForm.lastName,
                     dni: this.selectedBatchForm.dni,
                     address: this.selectedBatchForm.address,
