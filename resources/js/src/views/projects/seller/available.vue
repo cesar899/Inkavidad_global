@@ -1,27 +1,30 @@
 <template>
-    <b-card title="Proyectos disponibles">
-        <!-- para vendedor -->
-        <b-card-group class="pt-2" deck>
+	<b-overlay :show="isLoading">    
+        <b-card title="Proyectos disponibles">
+            <!-- para vendedor -->
+            <b-card-group class="pt-2" deck>
 
-            <div class="col-lg-4 col-md-6 col-12 mb-1" v-for="(project, index) in projects" :key="index">
-                <div class="wrapper__card__project">
-                    <b-card :title="project.name" body-class="text-center" class="mb-1" img-top :img-alt="imgDescription(project)"
-                        :img-src="project.featured_image" tag="article" style="max-width: 20rem;">
+                <div class="col-lg-4 col-md-6 col-12 mb-1" v-for="(project, index) in projects" :key="index">
+                    <div class="wrapper__card__project">
+                        <b-card :title="project.name" body-class="text-center" class="mb-1" img-top :img-alt="imgDescription(project)"
+                            :img-src="project.featured_image" tag="article" style="max-width: 20rem;">
 
-                        <b-button :href="'/projects/'+ project.id + '/groups/sell'" variant="primary">
-                            Ver Grupo de lotes
-                        </b-button>
-                    </b-card>
+                            <b-button :href="'/projects/'+ project.id + '/groups/sell'" variant="primary">
+                                Ver Grupo de lotes
+                            </b-button>
+                        </b-card>
+                    </div>
+
                 </div>
 
-            </div>
+            </b-card-group>
+        </b-card>
+    </b-overlay>
 
-        </b-card-group>
-    </b-card>
 </template>
   
 <script>
-import { BCard, BCardText, BCardGroup, BButton } from 'bootstrap-vue'
+import { BCard, BCardText, BCardGroup, BButton, BOverlay} from 'bootstrap-vue'
 
 export default {
     components: {
@@ -29,10 +32,12 @@ export default {
         BCardText,
         BCardGroup,
         BButton,
+        BOverlay
     },
     data() {
         return {
             currentProjectList: [],
+            isLoading: false,
         }
     },
     methods: {
@@ -43,9 +48,11 @@ export default {
         },
 
         async getProjects() {
+            this.isLoading = true;
             let request = await this.$store.dispatch('projects/getAvailableProjects')
 
             if (request.data.length > 0) this.currentProjectList = request.data;
+            this.isLoading = false;
         },
     },
 

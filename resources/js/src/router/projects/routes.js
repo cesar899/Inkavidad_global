@@ -72,7 +72,6 @@ export default [
     {
         path: '/projects/:project_id/groups',
         name: 'project-groups',
-        // component: () => import('@/views/projects/selected.vue'),
         meta: {
             pageTitle: 'Grupos del proyecto',
             breadcrumb: [

@@ -1,65 +1,63 @@
 <template>
-	<b-card>
-		<template #header>
-			<h4>Nuevo Grupo</h4>
+	<b-overlay :show="isLoading">
+		<b-card>
+			<template #header>
+				<h4>Nuevo Grupo</h4>
 
-			<feather-icon id="tooltip-back" @click="redirectToBack()" class="cursor-pointer icon--back" size="25"
-				icon="ArrowLeftIcon" />
-			<b-tooltip target="tooltip-back" triggers="hover">
-				Volver
-			</b-tooltip>
-		</template>
+				<feather-icon id="tooltip-back" @click="redirectToBack()" class="cursor-pointer icon--back" size="25"
+					icon="ArrowLeftIcon" />
+				<b-tooltip target="tooltip-back" triggers="hover">
+					Volver
+				</b-tooltip>
+			</template>
 
-		<validation-observer ref="projectsValidation">
-			<b-form class="mt-2" @submit.prevent>
+			<validation-observer ref="projectsValidation">
+				<b-form class="mt-2" @submit.prevent>
 
-				<b-form-group label="name" label-for="batch-name">
-					<validation-provider #default="{ errors }" name="Name" rules="required">
-						<b-form-input id="batch-name" v-model="name" :state="errors.length > 0 ? false:null"
-							name="batch-name" placeholder="batch name" />
-						<small class="text-danger">{{ errors[0] }}</small>
-					</validation-provider>
-				</b-form-group>
+					<b-form-group label="Nombre de lote" label-for="batch-name">
+						<validation-provider #default="{ errors }" name="Name" rules="required">
+							<b-form-input id="batch-name" v-model="name" :state="errors.length > 0 ? false:null"
+								name="batch-name" placeholder="Nombre de lote" />
+							<small class="text-danger">{{ errors[0] }}</small>
+						</validation-provider>
+					</b-form-group>
 
-				<b-form-group label="Proyecto" label-for="project">
-					<validation-provider #default="{ errors }" name="Project" rules="required">
+					<b-form-group label="Proyecto" label-for="project">
+						<validation-provider #default="{ errors }" name="Project" rules="required">
 
-						<b-form-select id="project" name="project" class="mb-2" 
-							v-model="selectedProject" :options="projects" 
-						/>
+							<b-form-select id="project" name="project" class="mb-2" v-model="selectedProject"
+								:options="projects" />
 
-						<small class="text-danger">{{ errors[0] }}</small>
-					</validation-provider>
-				</b-form-group>
+							<small class="text-danger">{{ errors[0] }}</small>
+						</validation-provider>
+					</b-form-group>
 
-				<!-- <b-form-input id="batch-plan" v-model="plan" :state="errors.length > 0 ? false:null"
-					name="batch-plan" placeholder="batch Plan" /> -->
+					<b-form-group class="pb-1" label="status" label-for="batch-status">
+						<validation-provider #default="{ errors }" name="status" rules="required">
+							<b-form-checkbox switch class="mr-n2" id="batch-status" name="batch-status" v-model="status"
+								:state="errors.length > 0 ? false:null" />
+							<small class="text-danger">{{ errors[0] }}</small>
+						</validation-provider>
+					</b-form-group>
 
+					<!-- submit buttons -->
+					<b-button type="submit" variant="primary" block @click="validationForm">
+						Registrar Datos
+					</b-button>
 
-				<b-form-group class="pb-1" label="status" label-for="batch-status">
-					<validation-provider #default="{ errors }" name="status" rules="required">
-						<b-form-checkbox switch class="mr-n2" id="batch-status" name="batch-status" v-model="status"
-							:state="errors.length > 0 ? false:null" />
-						<small class="text-danger">{{ errors[0] }}</small>
-					</validation-provider>
-				</b-form-group>
+				</b-form>
+			</validation-observer>
 
-				<!-- submit buttons -->
-				<b-button type="submit" variant="primary" block @click="validationForm">
-					save
-				</b-button>
-
-			</b-form>
-		</validation-observer>
-
-	</b-card>
+		</b-card>
+	</b-overlay>
 </template>
 
 <script>
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import { required } from '@validations'
 import {
-	BCard, BCardText, BRow, BCol, BLink, BTooltip, BFormSelect, BFormGroup, BFormInput, BInputGroup, BFormCheckbox, BCardTitle, BForm, BButton, BFormCheckboxGroup
+	BCard, BCardText, BRow, BCol, BLink, BTooltip, BFormSelect, BFormGroup, BFormInput,
+	BInputGroup, BFormCheckbox, BCardTitle, BForm, BButton, BFormCheckboxGroup, BOverlay
 } from 'bootstrap-vue'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
@@ -76,6 +74,7 @@ export default {
 		BFormCheckbox,
 		BCardTitle,
 		BForm,
+		BOverlay,
 		BButton,
 		BTooltip,
 		BFormSelect,
@@ -87,8 +86,9 @@ export default {
 		return {
 			name: 'group-name',
 			status: false,
-			projectList: [{value: null, text: 'Seleccionar proyecto'}],
+			projectList: [{ value: null, text: 'Seleccionar proyecto' }],
 			selectedProject: null,
+			isLoading: false,
 			required,
 		}
 	},
@@ -99,13 +99,18 @@ export default {
 
 		initProjects(projectList) {
 			this.projectList = this.projectList.concat(projectList
-				.map(project => ({ text: project.name, value: project.id })));
+				.map(project => ({
+					text: project.name, value: project.id,
+					maxGroupQuantity: project.group_quantity, currentGroupQuantity: project.total_groups
+				})));
 		},
 
 		async getProjects() {
+			this.isLoading = true;
 			let request = await this.$store.dispatch('projects/getProjects');
 
 			if (request.data.length > 0) this.initProjects(request.data);
+			this.isLoading = false;
 		},
 
 		async validationForm() {
@@ -114,23 +119,41 @@ export default {
 				status: this.status ? 1 : 0,
 				project_id: this.selectedProject,
 			}
+			const currentProject = this.projectList.find(project => project.value === this.selectedProject);
+			try {
+				this.isLoading = true;
 
-			this.$refs.projectsValidation.validate().then(success => {
-				if (!success) return;
+				if (currentProject.maxGroupQuantity - currentProject.currentGroupQuantity <= 1)
+					throw new Error('Proyecto no acepta mas Grupos');
+
+				const validationSuccess = await this.$refs.projectsValidation.validate();
+				if (!validationSuccess)
+					throw new Error('Validacion Fallida');
 
 				this.$store.dispatch('groups/save', groupData).then(({ data }) => {
 					console.log(data)
 					this.$toast({
 						component: ToastificationContent,
 						props: {
-							title: 'Group Created',
+							title: 'Grupo Creado',
 							icon: 'CheckIcon',
 							variant: 'success',
 						},
 					})
 				});
+			} catch (error) {
+				console.log({ error })
+				this.$toast({
+					component: ToastificationContent,
+					props: {
+						title: error.message,
+						icon: 'XIcon',
+						variant: 'danger',
+					},
+				})
 
-			})
+			}
+			this.isLoading = false;
 		},
 	},
 	computed: {

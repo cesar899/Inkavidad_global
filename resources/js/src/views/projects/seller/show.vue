@@ -1,4 +1,5 @@
 <template>
+	<b-overlay :show="isLoading">
 
 	<b-card>
 		<template #header>
@@ -50,13 +51,14 @@
 		</b-card-group>
 
 	</b-card>
+</b-overlay>
 
 </template>
 
 <script>
 import {
 	BCard, BCardText, BCardGroup, BFormGroup, BInputGroup, BFormCheckbox, BTooltip, BCardTitle, BImg, 
-	BForm, BButton, BFormFile, BModal, BFormCheckboxGroup, BLink
+	BForm, BButton, BFormFile, BModal, BFormCheckboxGroup, BLink, BOverlay
 } from 'bootstrap-vue'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
@@ -74,6 +76,7 @@ export default {
 		BFormFile,
 		BModal,
 		BLink,
+		BOverlay,
 		BCardGroup,
 		BFormCheckboxGroup,
 		BTooltip,
@@ -84,7 +87,7 @@ export default {
 			availableGroups: [],
 			currentActiveGroups: [],
 			hasListChange: true,
-			loading: false,
+			isLoading: false,
 		}
 	},
 	methods: {
@@ -102,13 +105,16 @@ export default {
 		},
 
 		async getGroups() {
+			this.isLoading = true;
 			const projectId = this.$route.params.project_id;
 			let request = await this.$store.dispatch('groups/getGroupsByProjectForSale', projectId);
 
 			if (request.data.length > 0) this.initGroups(request.data);
+			this.isLoading = false;
 		},
 
 		async getProject() {
+			this.isLoading = true;
 			const projectId = this.$route.params.project_id;
 			try {
 				let request = await this.$store.dispatch('projects/getProject', projectId)
@@ -126,46 +132,8 @@ export default {
 				})
 				this.$router.push('./');
 			}
+			this.isLoading = false;
 		},
-
-		async saveGroupChanges() {
-			const projectId = this.$route.params.project_id;
-			let groupsToUpdate = [];
-
-			this.availableGroups.forEach((group) => {
-				if (group.checked && !this.currentActiveGroups.includes(group.value))
-					groupsToUpdate.push(group.value);
-				if (!group.checked && this.currentActiveGroups.includes(group.value))
-					groupsToUpdate.push(group.value);
-			});
-			const newData = { groups: groupsToUpdate, projectId };
-
-			this.hasChange = true;
-
-			try {
-				let request = await this.$store.dispatch('groups/saveGroupChangesByProject', newData)
-
-				if (request.data) this.$toast({
-					component: ToastificationContent,
-					props: {
-						title: 'Cambios realizados',
-						icon: 'CheckCircleIcon',
-						variant: 'succes',
-					},
-				});
-				this.getGroups();
-
-			} catch (error) {
-				this.$toast({
-					component: ToastificationContent,
-					props: {
-						title: 'Sucedio un error no pudieron guardarse los cambios',
-						icon: 'XIcon',
-						variant: 'danger',
-					},
-				})
-			}
-		}
 	},
 	computed: {
 		groups: {

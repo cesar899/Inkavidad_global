@@ -19,4 +19,14 @@ export default [
     route: 'projects',
     icon: 'BriefcaseIcon',
   },
+  {
+    title: 'Crear Grupo',
+    route: 'groups-create',
+    icon: 'BriefcaseIcon',
+  },
+  {
+    title: 'Proyectos para venta',
+    route: 'projects-available',
+    icon: 'BriefcaseIcon',
+  },
 ]

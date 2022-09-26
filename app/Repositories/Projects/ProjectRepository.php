@@ -38,6 +38,7 @@ class ProjectRepository
 
 	public function getProjects() {
 		$itemList = Project::withCount([
+			'groups as total_groups',
 			'batchs as total_batchs',
 			'batchs as available_batchs_count' => function (Builder $query) {
 				$query->where('status', 1);

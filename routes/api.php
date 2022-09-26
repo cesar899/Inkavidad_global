@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,4 +31,5 @@ Route::get('/groups/{group_id}/batchs/', [BatchController::class, 'groupBatchs']
 Route::resource('batchs', BatchController::class);
 Route::resource('projects', ProjectController::class);
 Route::resource('groups', GroupController::class);
+Route::resource('orders', OrderController::class);
 

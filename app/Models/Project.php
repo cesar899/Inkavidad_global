@@ -21,4 +21,10 @@ class Project extends Model
     {
         return $this->hasMany(Batch::class);
     }
+
+    public function groups()
+    {
+        return $this->hasMany(Group::class);
+    }
+
 }
