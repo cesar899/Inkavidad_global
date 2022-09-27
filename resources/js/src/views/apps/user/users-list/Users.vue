@@ -128,7 +128,7 @@
 
     methods: {
       userRol(){
-        this.rol == 1
+        this.rol == 1 || this.rol == 4
           ? this.loaderRol = true
           : this.loaderRol = false
       },
