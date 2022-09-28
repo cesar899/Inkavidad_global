@@ -30,7 +30,7 @@ export default [
     {
         path: '/projects/available',
         name: 'projects-available',
-        component: () => import('@/views/projects/seller/available'),
+        component: () => import('@/views/projects/seller'),
         meta: {
             pageTitle: 'Available Projects',
             breadcrumb: [
