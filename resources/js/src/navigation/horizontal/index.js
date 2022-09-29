@@ -30,6 +30,8 @@ import chartsAndMaps from './charts-and-maps'
 import uiElements from './ui-elements'
 import formAndTable from './forms-and-table'
 import others from './others'
+import batches from './batches'
+import projects from './projects'
 
 // Array of sections
-export default [...dashboard, ...apps, ...uiElements, ...formAndTable, ...pages, ...chartsAndMaps, ...others]
+export default [...dashboard, ...apps, ...uiElements, ...formAndTable, ...pages, ...chartsAndMaps, ...others, ...batches, ...projects]

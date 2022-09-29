@@ -137,7 +137,12 @@ export default {
   },
   data() {
     return {
-      userData: JSON.parse(localStorage.getItem('userData')),
+      userData: JSON.parse(localStorage.getItem('userData')) || {
+        fullName: '',
+        username: '',
+        role: '',
+        avatar: '',
+      },
       avatarText,
     }
   },
