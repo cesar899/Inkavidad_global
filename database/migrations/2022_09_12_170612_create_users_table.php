@@ -30,7 +30,7 @@ return new class extends Migration
             $table->tinyInteger('type_dni')->nullable();
             $table->string('dni')->nullable();
             $table->string('phone')->nullable();
-            $table->string('direction')->nullable();
+            $table->string('address')->nullable();
             $table->string('remember_token')->nullable();
             $table->timestamps();
         });

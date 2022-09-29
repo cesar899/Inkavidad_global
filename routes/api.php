@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\BatchController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\GroupController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,3 +50,14 @@ Route::group([
 
 	Route::get('roles', [RoleController::class, 'index']);
 });
+Route::get('/projects/availables', [ProjectController::class, 'availableProjects']);
+Route::get('/projects/{project_id}/groups/batchs', [GroupController::class, 'groupBatchsByProject']);
+Route::get('/projects/{project_id}/groups/onsale', [GroupController::class, 'groupsByProjectForSale']);
+Route::get('/projects/{project_id}/groups/', [GroupController::class, 'projectGroups']);
+Route::put('/projects/{project_id}/groups/', [GroupController::class, 'updateProjectGroups']);
+Route::get('/groups/{group_id}/batchs/', [BatchController::class, 'groupBatchs']);
+Route::resource('batchs', BatchController::class);
+Route::resource('projects', ProjectController::class);
+Route::resource('groups', GroupController::class);
+Route::resource('orders', OrderController::class);
+

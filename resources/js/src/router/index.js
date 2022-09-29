@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import batchRoutes from './batchs/routes'
+import projectsRoutes from './projects/routes'
+import groupsRoutes from './groups/routes'
 
 // Routes
 import { canNavigate } from '@/libs/acl/routeProtection'
@@ -23,6 +26,9 @@ const router = new VueRouter({
   routes: [
     { path: '/', redirect: { name: 'dashboard-ecommerce' } },
     ...apps,
+    ...batchRoutes,
+		...projectsRoutes,
+		...groupsRoutes,
     ...dashboard,
     ...pages,
     ...chartsMaps,
@@ -39,11 +45,11 @@ const router = new VueRouter({
 // ? For splash screen
 // Remove afterEach hook if you are not using splash screen
 router.afterEach(() => {
-  // Remove initial loading
-  const appLoading = document.getElementById('loading-bg')
-  if (appLoading) {
-    appLoading.style.display = 'none'
-  }
+	// Remove initial loading
+	const appLoading = document.getElementById('loading-bg')
+	if (appLoading) {
+		appLoading.style.display = 'none'
+	}
 })
 
 export default router
