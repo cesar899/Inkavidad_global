@@ -42,6 +42,18 @@ const router = new VueRouter({
   ],
 })
 
+router.beforeEach((to, from, next) => {
+  const token = sessionStorage.getItem('jwt')
+
+  if(!token){
+    if(to.path !== '/login'){
+      return next('/login')
+    }
+  }
+
+  return next()
+})
+
 // ? For splash screen
 // Remove afterEach hook if you are not using splash screen
 router.afterEach(() => {

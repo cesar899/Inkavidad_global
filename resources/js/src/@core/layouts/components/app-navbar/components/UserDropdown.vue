@@ -143,24 +143,39 @@ export default {
         role: '',
         avatar: '',
       },
+      token: sessionStorage.getItem('jwt'),
       avatarText,
     }
   },
   methods: {
     logout() {
-      // Remove userData from localStorage
-      // ? You just removed token from localStorage. If you like, you can also make API call to backend to blacklist used token
-      localStorage.removeItem(useJwt.jwtConfig.storageTokenKeyName)
-      localStorage.removeItem(useJwt.jwtConfig.storageRefreshTokenKeyName)
+      this.$http.post('/api/logout', {
+        headers: {'Authorization' : `Bearer ${this.token}`}
+      })
+      .then(res => {
+        sessionStorage.removeItem('jwt')
+        sessionStorage.removeItem('rol')
+        this.$router.push('login')
+      })
+      .catch(e => {
+        sessionStorage.removeItem('jwt')
+        sessionStorage.removeItem('rol')
+        this.$router.push('login')
+      })
 
-      // Remove userData from localStorage
-      localStorage.removeItem('userData')
+      // // Remove userData from localStorage
+      // // ? You just removed token from localStorage. If you like, you can also make API call to backend to blacklist used token
+      // localStorage.removeItem(useJwt.jwtConfig.storageTokenKeyName)
+      // localStorage.removeItem(useJwt.jwtConfig.storageRefreshTokenKeyName)
 
-      // Reset ability
-      this.$ability.update(initialAbility)
+      // // Remove userData from localStorage
+      // localStorage.removeItem('userData')
 
-      // Redirect to login page
-      this.$router.push({ name: 'auth-login' })
+      // // Reset ability
+      // this.$ability.update(initialAbility)
+
+      // // Redirect to login page
+      // this.$router.push({ name: 'auth-login' })
     },
   },
 }
