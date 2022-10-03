@@ -27,6 +27,7 @@
       v-if="!isNavMenuHidden"
       :is-vertical-menu-active="isVerticalMenuActive"
       :toggle-vertical-menu-active="toggleVerticalMenuActive"
+      :nav-menu-items="navMenuItems"
     >
       <template #header="slotProps">
         <slot
@@ -109,6 +110,12 @@ export default {
     LayoutContentRendererDefault,
   },
   mixins: [mixinVerticalLayout],
+  props: {
+    navMenuItems: {
+      type: Array,
+      required: true,
+    },
+  },
   computed: {
     layoutContentRenderer() {
       const rendererType = this.$route.meta.contentRenderer
