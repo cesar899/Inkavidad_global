@@ -209,6 +209,17 @@ export default [
     name: 'apps-users-edit',
     component: () => import('@/views/apps/user/users-edit/EditUser.vue'),
   },
+  // Rutas Sellers 
+  {
+    path: '/sellers/list',
+    name: 'sellers-list',
+    component: () => import('@/views/apps/sellers/sellersList/sellers.vue'),
+  },
+  {
+    path: '/seller/details/:id',
+    name: 'sellers-details',
+    component: () => import('@/views/apps/sellers/sellersList/sellerDetails.vue'),
+  },
   // {
   //   path: '/apps/users/edit/:id',
   //   name: 'apps-users-edit',

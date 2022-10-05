@@ -31,6 +31,14 @@ class Batch extends Model
     {
         return $this->belongsTo(Group::class);
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    public function seller()
+    {
+        return $this->belongsTo(User::class, 'seller_id');
+    }
 
     public function project()
     {

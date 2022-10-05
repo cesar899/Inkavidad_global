@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\SellersController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\OrderController;
 
@@ -35,9 +36,9 @@ Route::controller(PasswordResetController::class)->group(
 });
 
 //rutas con token
-Route::group([
- 	'middleware' => ['jwt.verify'],
-], function ($router) {
+// Route::group([
+//  	'middleware' => ['jwt.verify'],
+// ], function ($router) {
 
 	Route::controller(UserController::class)->group(
 		function($router) {
@@ -47,9 +48,14 @@ Route::group([
 			Route::get('/users', 'showAllUsers');
 			Route::get('/user/{id}', 'showUser');
 	});
+	Route::controller(SellersController::class)->group(
+		function($router) {
+			Route::get('/sellers', 'getSellers');
+			Route::get('/seller/details/{id}', 'getSellerDetails');
+	});
 
 	Route::get('roles', [RoleController::class, 'index']);
-});
+// });
 Route::get('/projects/availables', [ProjectController::class, 'availableProjects']);
 Route::get('/projects/{project_id}/groups/batchs', [GroupController::class, 'groupBatchsByProject']);
 Route::get('/projects/{project_id}/groups/onsale', [GroupController::class, 'groupsByProjectForSale']);

@@ -28,8 +28,8 @@ return new class extends Migration
             $table->string('adjoins_est', 191);
             $table->string('adjoins_west', 191);
 
-            $table->string('amount_owed', 191);
-            $table->string('amount', 191);
+            $table->double('amount_owed', 191);
+            $table->double('amount', 191);
             $table->tinyInteger('status')->default(1);
 
             $table->foreignId('project_id')
