@@ -61,3 +61,6 @@ Route::resource('projects', ProjectController::class);
 Route::resource('groups', GroupController::class);
 Route::resource('orders', OrderController::class);
 
+
+Route::get('/prueba/order', [OrderController::class, 'showOrder']);
+

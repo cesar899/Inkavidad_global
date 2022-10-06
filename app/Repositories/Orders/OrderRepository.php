@@ -17,4 +17,15 @@ class OrderRepository
 
 		return Order::create($data);
 	}
+
+	public function show() {
+		$orden = Order::with(
+			'user',
+			'seller',
+			'batch.project',
+			'batch.group'
+		)->get();
+
+		return response()->json($orden, 200);
+	}
 }
