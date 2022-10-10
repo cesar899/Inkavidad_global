@@ -25,5 +25,41 @@ class UserSeeder extends Seeder
         	"created_at" => date('Y-m-d H:m:s'),
             "updated_at" => date('Y-m-d H:m:s'),
         ]);
+        DB::table('users')->insert([
+            'name' => 'User',
+        	'last_name' => 'Financial',
+        	'email' => 'financial@valdusoft.com',
+        	'password' => Hash::make('Financial11#'),
+        	'rol' => 2,
+        	"created_at" => date('Y-m-d H:m:s'),
+            "updated_at" => date('Y-m-d H:m:s'),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'User',
+        	'last_name' => 'Accountant',
+        	'email' => 'accountant@valdusoft.com',
+        	'password' => Hash::make('Acountant11#'),
+        	'rol' => 3,
+        	"created_at" => date('Y-m-d H:m:s'),
+            "updated_at" => date('Y-m-d H:m:s'),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'User',
+            'last_name' => 'Seller',
+            'email' => 'seller@valdusoft.com',
+            'password' => Hash::make('Seller11#'),
+            'rol' => 4,
+            "created_at" => date('Y-m-d H:m:s'),
+            "updated_at" => date('Y-m-d H:m:s'),
+        ]);
+        DB::table('users')->insert([
+        	'name' => 'User',
+        	'last_name' => 'User',
+        	'email' => 'user@valdusoft.com',
+        	'password' => Hash::make('User11#'),
+        	'rol' => 5,
+        	"created_at" => date('Y-m-d H:m:s'),
+            "updated_at" => date('Y-m-d H:m:s'),
+        ]);
     }
 }
