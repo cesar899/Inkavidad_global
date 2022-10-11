@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
             $table->string('name', 191);
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->comment('0 - Active, 1 - Inactive');
 
             $table->foreignId('project_id')
                 ->nullable()
