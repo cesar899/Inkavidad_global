@@ -6,6 +6,15 @@ import i18n from '@/libs/i18n'
 import router from './router'
 import store from './store'
 import App from './App.vue'
+import VueSweetalert2 from 'vue-sweetalert2';
+
+// If you don't need the styles, do not connect
+import 'sweetalert2/dist/sweetalert2.min.css';
+
+Vue.use(VueSweetalert2);
+
+
+
 
 // Global Components
 import './global-components'
@@ -24,6 +33,7 @@ import '@/libs/tour'
 import '@/@fake-db/db'
 
 // BSV Plugin Registration
+// Vue.use(VueSweetalert2);
 Vue.use(ToastPlugin)
 Vue.use(ModalPlugin)
 

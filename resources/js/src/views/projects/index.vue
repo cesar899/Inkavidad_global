@@ -13,15 +13,14 @@
                         :img-src="project.featured_image" tag="article" style="max-width: 20rem;">
 
                         <div class="d-flex flex-column align-items-center pb-2">
-                            
+
                             <div class="pb-2">
                                 <b-card-text>
                                     Estado
                                 </b-card-text>
-                                <b-card-text>
-                                    {{statusString(project)}}
-                                    <feather-icon :class="statusColor(project)" size="20" :icon="statusIcon(project)" />
-                                </b-card-text>
+                                <b-form-checkbox @change="alertChange(project)" v-model="project.checked" name="check-button" switch>
+                                     <b>{{ project.checked == true ? 'Activo' : 'Inactivo' }}</b>
+                                </b-form-checkbox> 
                             </div>
 
                             <div>
@@ -30,25 +29,30 @@
                                 </b-card-text>
 
                                 <div class="d-flex flex-wrap justify-content-center">
-                                    <div class="d-flex flex-column align-items-center col-lg-4 col-md-6 col-6" variant="light">
+                                    <div class="d-flex flex-column align-items-center col-lg-4 col-md-6 col-6"
+                                        variant="light">
                                         Totales
                                         <div>
                                             <b-badge pill variant="secondary">{{project.total_batchs}}</b-badge>
                                         </div>
                                     </div>
-                                    <div class="d-flex align-items-center flex-column col-lg-4 col-md-6 col-6 pr-2" variant="light">
+                                    <div class="d-flex align-items-center flex-column col-lg-4 col-md-6 col-6 pr-2"
+                                        variant="light">
                                         Disponibles
                                         <div>
-                                            <b-badge pill variant="secondary">{{project.available_batchs_count}}</b-badge>
+                                            <b-badge pill variant="secondary">{{project.available_batchs_count}}
+                                            </b-badge>
                                         </div>
                                     </div>
-                                    <div class="d-flex align-items-center flex-column col-lg-4 col-md-6 col-6" variant="light">
+                                    <div class="d-flex align-items-center flex-column col-lg-4 col-md-6 col-6"
+                                        variant="light">
                                         Apartados
                                         <div>
                                             <b-badge pill variant="secondary">{{project.pending_batchs_count}}</b-badge>
                                         </div>
                                     </div>
-                                    <div class="d-flex align-items-center flex-column col-lg-4 col-md-6 col-6" variant="light">
+                                    <div class="d-flex align-items-center flex-column col-lg-4 col-md-6 col-6"
+                                        variant="light">
                                         Vendidos
                                         <div>
                                             <b-badge pill variant="secondary">{{project.sold_batchs_count}}</b-badge>
@@ -57,7 +61,7 @@
                                 </div>
 
                             </div>
-                           
+
                         </div>
 
                         <b-button class="" :href="'/projects/'+ project.id" variant="primary">Ir a Grupo de lotes
@@ -72,11 +76,16 @@
 </template>
   
 <script>
-import { BCardGroup, BCard, BCardText, BButton, BLink, BBadge, BIconBack, BListGroup, BListGroupItem } from 'bootstrap-vue'
+import { BFormCheckbox, BCardGroup, BCard, BCardText, BButton, BLink, BBadge, BIconBack, BListGroup, BListGroupItem } from 'bootstrap-vue'
 import BButtonIcon from '@core/components/b-button-icon/BButtonIcon.vue';
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+
+
+
 
 export default {
     components: {
+        BFormCheckbox,
         BCardGroup,
         BCard,
         BCardText,
@@ -92,9 +101,55 @@ export default {
             currentProjectList: [],
         }
     },
-
     methods: {
-
+        alertChange({id, status}) {
+            this.$swal({
+                title: 'Esta seguro de querer cambiar el estado del proyecto?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.changeStatus(id)
+                } else {
+                    const index = this.currentProjectList.findIndex(e => e.id === id) 
+                    this.currentProjectList[index].checked = status == 1 ? true : false
+                    // project.checked = status == 1 ? true : false ;
+                }
+            })
+        },
+        changeStatus(id) {
+            this.$http.patch(`/api/change/status/${id}`, {
+                headers: { 'Authorization': `Bearer ${this.token}` }
+            })
+                .then((res) => {
+                    const index = this.currentProjectList.findIndex(e => e.id === id)
+                    this.currentProjectList[index].status = res.data.status
+                    if (res.data.status === 1) {    
+                        this.$toast({
+                            component: ToastificationContent,
+                            props: {
+                                title: 'Se ha activado el proyecto exitosamente',
+                                icon: 'CheckCircleIcon',
+                                variant: 'succes',
+                            }
+                        })
+                    } else {
+                        this.$toast({
+                            component: ToastificationContent,
+                            props: {
+                                title: 'Se ha desactivado el proyecto exitosamente',
+                                icon: 'CheckCircleIcon',
+                                variant: 'succes',
+                            }
+                        })
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                })
+        },
         statusString(project) {
             return project?.status == 1 ? 'Activo' : 'Inactivo';
         },
@@ -114,8 +169,7 @@ export default {
 
         async getProjects() {
             let request = await this.$store.dispatch('projects/getProjects')
-            console.log(request)
-            if (request.data.length > 0) this.currentProjectList = request.data;
+            if (request.data.length > 0) this.currentProjectList = request.data.map(e => ({ checked: e.status === 1, ...e }));
         },
     },
 
@@ -123,7 +177,6 @@ export default {
         projects: {
             get() {
                 if (this.currentProjectList.length == 0) this.getProjects();
-
                 return this.currentProjectList;
             },
             set(value) { }
