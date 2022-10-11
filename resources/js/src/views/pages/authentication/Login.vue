@@ -235,7 +235,7 @@ import { required, email } from '@validations'
 import { togglePasswordVisibility } from '@core/mixins/ui/forms'
 import store from '@/store/index'
 import { getHomeRouteForLoggedInUser } from '@/auth/utils'
-
+import { mapMutations } from 'vuex'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 import axios from 'axios'
 
@@ -291,14 +291,20 @@ export default {
     },
   },
   methods: {
+    ...mapMutations({
+        tokenMutation: 'auth/setToken',
+        roleMutation: 'auth/setRole'
+  }), 
     async login() {
        this.$refs.loginForm.validate().then(async success => {
         if (success) {
- 
+
           await this.$http.post('api/login', this.data)
           .then((res) => {
-            sessionStorage.setItem('jwt', res.data.token);
-            sessionStorage.setItem('rol', res.data.user.rol);
+            this.tokenMutation(res.data.token)
+            this.roleMutation(res.data.user.rol)
+            localStorage.setItem('jwt', res.data.token);
+            localStorage.setItem('rol', res.data.user.rol);
             if (res.data.user.rol === 1) {
               this.$ability.update([{
                 action: "manage",

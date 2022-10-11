@@ -64,7 +64,7 @@
 
                         </div>
 
-                        <b-button class="" :href="'/projects/'+ project.id" variant="primary">Ir a Grupo de lotes
+                        <b-button class="" v-if="adminRole" :href="'/projects/'+ project.id" variant="primary">Ir a Grupo de lotes
                         </b-button>
                     </b-card>
                 </div>
