@@ -299,6 +299,13 @@ export default {
           .then((res) => {
             sessionStorage.setItem('jwt', res.data.token);
             sessionStorage.setItem('rol', res.data.user.rol);
+            if (res.data.user.rol === 1) {
+              this.$ability.update([{
+                action: "manage",
+                subject: "all"
+              }
+            ])
+            }
             this.$router.push('/dashboard/analytics');
           }).catch((error) => {       
             this.$refs.loginForm.setErrors(error.res);

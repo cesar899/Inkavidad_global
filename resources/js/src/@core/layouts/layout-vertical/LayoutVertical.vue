@@ -29,6 +29,7 @@
       :toggle-vertical-menu-active="toggleVerticalMenuActive"
       :nav-menu-items="navMenuItems"
     >
+    
       <template #header="slotProps">
         <slot
           name="vertical-menu-header"

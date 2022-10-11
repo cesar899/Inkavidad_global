@@ -15,6 +15,21 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained('users');
+
+            $table->foreignId('seller_id')
+                ->nullable()
+                ->constrained('users');
+
+            $table->foreignId('batch_id')
+                ->nullable()
+                ->constrained('batches');
+            $table->tinyInteger('status')->default(0);
+            $table->double('amount', 8, 2)->default(0);
+            $table->double('amount_paid', 8, 2)->default(0);
+            $table->double('dues', 191)->nullable();
             $table->timestamps();
         });
     }

@@ -8,10 +8,14 @@ export default [
       {
         title: 'eCommerce',
         route: 'dashboard-ecommerce',
+        resource: 'Dashboard',
+        action: 'read',
       },
       {
         title: 'Analytics',
         route: 'dashboard-analytics',
+        resource: 'Dashboard',
+        action: 'read',
       },
     ],
   },
