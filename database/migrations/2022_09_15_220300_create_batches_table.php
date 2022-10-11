@@ -42,7 +42,7 @@ return new class extends Migration
 
             $table->double('amount_owed', 191);
             $table->double('amount', 191);
-            $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('status')->default(0)->comment('0 - Available, 1 - Reserved, 2 - Partially Paid, 3 - Paid, 4 - legal, 5 - Lawful Failed, 6 - Complete');
 
 
             $table->timestamps();
