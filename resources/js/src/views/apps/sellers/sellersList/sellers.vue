@@ -3,7 +3,7 @@
       <h3 class="ml-2 my-2">Lista de vendedores</h3>
       <b-table
         id="UserTable"
-        class="position-relative" 
+        class="position-relative"
         striped hover
         responsive
         show-empty
@@ -13,19 +13,19 @@
         :per-page="perPage"
         :current-page="currentPage">
         <template #cell(Action)="data">
-          <b-button 
+          <b-button
             variant="warning"
             v-on:click.prevent="showSeller(data.item.id)">
             <span class="text-nowrap">Show details</span>
           </b-button>
-  
-          <!-- <b-button 
+
+          <!-- <b-button
             variant="danger"
             v-on:click.prevent="deleteUser(data.item.id)">
             <span class="text-nowrap">Delete</span>
           </b-button> -->
         </template>
-  
+
         <template #cell(lots_sold)="data">
             {{data.item.batches_sold.length}}
         </template>
@@ -35,7 +35,7 @@
         <template #cell(clients_amount_indebted)="data">
           {{getAmountOwed(data.item.batches_sold)}}
         </template>
-  
+
       </b-table>
       <b-pagination
         v-model="currentPage"
@@ -45,7 +45,7 @@
       ></b-pagination>
     </div>
   </template>
-  
+
   <script>
     import {
       // BCard,
@@ -62,7 +62,7 @@
       // BDropdownItem,
       BPagination,
     } from 'bootstrap-vue'
-  
+
     export default {
       components: {
         // BCard,
@@ -78,8 +78,8 @@
         // BDropdown,
         // BDropdownItem,
         BPagination,
-      }, 
-  
+      },
+
       data() {
         return {
           loaderRol: null,
@@ -121,22 +121,22 @@
           ]
         }
       },
-  
+
       computed: {
         rows() {
           return this.sellers.length
         }
       },
-  
+
       created() {
         this.getSellers()
       },
-  
+
       methods: {
         getTotalAmount(solds) {
           return solds.length > 0 ? solds.reduce((accumulator, object) => { return accumulator + object.amount }, 0) : 0
         },
-        getAmountOwed(owed) { 
+        getAmountOwed(owed) {
           return owed.length > 0 ? owed.reduce((accumulator, object) => { return accumulator + object.amount_owed }, 0) : 0
         },
         getSellers() {
@@ -146,11 +146,11 @@
             .then((res) => {
               console.log(res.data);
               this.sellers = res.data
-            }).catch((error) => {       
+            }).catch((error) => {
               console.log(error);
           })
         },
-  
+
         showSeller(id) {
           this.$router.push(`/seller/details/${id}`)
         },
@@ -162,5 +162,5 @@
   </script>
   |
   <style>
-    
+
   </style>

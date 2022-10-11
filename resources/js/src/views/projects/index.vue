@@ -13,7 +13,7 @@
                         :img-src="project.featured_image" tag="article" style="max-width: 20rem;">
 
                         <div class="d-flex flex-column align-items-center pb-2">
-                            
+
                             <div class="pb-2">
                                 <b-card-text>
                                     Estado
@@ -57,10 +57,11 @@
                                 </div>
 
                             </div>
-                           
-                        </div>
 
-                        <b-button class="" :href="'/projects/'+ project.id" variant="primary">Ir a Grupo de lotes
+                        </div>
+                        <b-button class="" v-if="userAdmin" :href="'/projects/'+ project.id" variant="primary">Ir a Grupo de lotes
+                        </b-button>
+                        <b-button class="" v-if="userSeller" :href="'/projects/'+ project.id" variant="primary">Prueba vendedor
                         </b-button>
                     </b-card>
                 </div>
@@ -70,7 +71,7 @@
     </b-card>
 
 </template>
-  
+
 <script>
 import { BCardGroup, BCard, BCardText, BButton, BLink, BBadge, BIconBack, BListGroup, BListGroupItem } from 'bootstrap-vue'
 import BButtonIcon from '@core/components/b-button-icon/BButtonIcon.vue';
@@ -89,9 +90,15 @@ export default {
     },
     data() {
         return {
+            token: sessionStorage.getItem('jwt'),
+            rol: sessionStorage.getItem('rol'),
+            adminRole: false,
+            sellerRole: false,
             currentProjectList: [],
         }
     },
+
+    created() {},
 
     methods: {
 
@@ -114,12 +121,19 @@ export default {
 
         async getProjects() {
             let request = await this.$store.dispatch('projects/getProjects')
-            console.log(request)
+
             if (request.data.length > 0) this.currentProjectList = request.data;
         },
     },
 
     computed: {
+        userAdmin() {
+            return this.rol === '1'
+        },
+        userSeller() {
+           return  this.rol === '4'
+        },
+
         projects: {
             get() {
                 if (this.currentProjectList.length == 0) this.getProjects();
@@ -132,7 +146,7 @@ export default {
 
 }
 </script>
-  
+
 <style>
 .wrapper__card__project {
     display: flex;
@@ -150,4 +164,3 @@ export default {
     color: green;
 }
 </style>
-  

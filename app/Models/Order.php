@@ -16,6 +16,7 @@ class Order extends Model
         'amount',
         'status',
         'user_id',
+        'sale_id',
         'seller_id',
         'batch_id',
     ];

@@ -21,6 +21,7 @@ class OrderSeeder extends Seeder
             'payment_proof' => '123456',
             'status' => 0,
             'user_id' => 5,
+            'sale_id' => 1,
             'seller_id' => 4,
             'batch_id' => 1,
         	"created_at" => date('Y-m-d H:m:s'),

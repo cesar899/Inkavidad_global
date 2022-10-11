@@ -8,8 +8,10 @@ use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SellersController;
+use App\Http\Controllers\SalesController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\OrderController;
+use Illuminate\Routing\RouteGroup;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,4 +68,11 @@ Route::resource('batchs', BatchController::class);
 Route::resource('projects', ProjectController::class);
 Route::resource('groups', GroupController::class);
 Route::resource('orders', OrderController::class);
+
+//Rutas para ventas
+Route::controller(SalesController::class)->group(
+    function($router) {
+        Route::get('/sales', 'index');
+        Route::get('/sale/details/{id}', 'show');
+});
 

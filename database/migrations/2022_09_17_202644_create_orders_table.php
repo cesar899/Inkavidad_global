@@ -18,6 +18,9 @@ return new class extends Migration
             $table->foreignId('user_id')
                 ->nullable()
                 ->constrained('users');
+            $table->foreignId('sale_id')
+                ->nullable()
+                ->constrained('sales');
 
             $table->foreignId('seller_id')
                 ->nullable()

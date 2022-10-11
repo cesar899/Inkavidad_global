@@ -209,7 +209,7 @@ export default [
     name: 'apps-users-edit',
     component: () => import('@/views/apps/user/users-edit/EditUser.vue'),
   },
-  // Rutas Sellers 
+  // Rutas Sellers
   {
     path: '/sellers/list',
     name: 'sellers-list',
@@ -232,6 +232,18 @@ export default [
     name: 'apps-invoice-list',
     component: () => import('@/views/apps/invoice/invoice-list/InvoiceList.vue'),
   },
+  // Start Sales
+  {
+    path: '/sale-list',
+    name: 'sales-list',
+    component: () => import('@/views/apps/sale/sale-list/salesList.vue'),
+  },
+  {
+    path: '/sale/details/:id',
+    name: 'sale-details',
+    component: () => import('@/views/apps/sale/sale-list/saleDetails.vue'),
+  },
+    //End sales
   {
     path: '/apps/invoice/preview/:id',
     name: 'apps-invoice-preview',
