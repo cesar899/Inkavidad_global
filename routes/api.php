@@ -9,6 +9,7 @@ use App\Http\Controllers\BatchController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\SaleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,4 +64,4 @@ Route::resource('orders', OrderController::class);
 
 
 Route::get('/prueba/order', [OrderController::class, 'showOrder']);
-
+Route::get('/prueba/sale', [SaleController::class, 'index']);

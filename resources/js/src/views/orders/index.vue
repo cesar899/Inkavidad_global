@@ -1,5 +1,11 @@
 <template>
 	<div>
+		<b-button
+			class="mt-2 mb-2" 
+		    variant="warning"
+		    v-on:click.prevent="estados">
+		    <span class="text-nowrap">Estado de Lotes</span>
+		</b-button>
 		<b-table
 		  id="orderTable"
 	      class="position-relative" 
@@ -77,14 +83,27 @@
 		          {
 		            key: 'status',
 		            label: 'status',
+		            formatter: value => {
+		            	if(value == 1) return value = 'Pendiente' 
+		              	if(value == 2) return value = 'Completado'
+		              	if(value == 3) return value = 'Cancelado'
+		            }
 		          },
 		          {
 		            key: 'created_at',
 		            label: 'creación',
+		            formatter: value => {
+		            	const date = new Date(value)
+		            	return date.toLocaleDateString()
+		            }
 		          },
 		          {
-		            key: 'updated_at',
+		            key: 'aprobado',
 		            label: 'aprobación',
+		            formatter: value => {
+		            	const date = new Date(value)
+		            	return date.toLocaleDateString()
+		            }
 		          },
 		        ]
 			}
@@ -108,6 +127,10 @@
 		        }).catch((e) => {       
 		           console.log(e)
 		        })
+			},
+
+			estados() {
+				this.$router.push('/estado/lotes')
 			}
 		},
 	}
