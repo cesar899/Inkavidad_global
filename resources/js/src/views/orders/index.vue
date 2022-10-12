@@ -98,7 +98,7 @@
 		            }
 		          },
 		          {
-		            key: 'aprobado',
+		            key: 'updated_at',
 		            label: 'aprobación',
 		            formatter: value => {
 		            	const date = new Date(value)

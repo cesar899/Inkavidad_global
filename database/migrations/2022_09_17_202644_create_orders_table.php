@@ -33,7 +33,6 @@ return new class extends Migration
             $table->foreignId('batch_id')
                 ->nullable()
                 ->constrained('batches');
-            $table->timestamp('aprobado', $precision = 0)->nullable()->dafaul(null);
             $table->timestamps();
         });
     }
