@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class SellersController extends Controller
 {
     function getSellers() {
-        $sellers = User::where('rol', 4)->with('batchesSold')->with('ordersSold')->get();
+        $sellers = User::where('rol', 4)->with('batchesSold')->with('sales')->get();
         return response()->json($sellers, 200);
     }
     function getSellerDetails($id) {

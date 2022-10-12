@@ -79,7 +79,9 @@
 import { BFormCheckbox, BCardGroup, BCard, BCardText, BButton, BLink, BBadge, BIconBack, BListGroup, BListGroupItem } from 'bootstrap-vue'
 import BButtonIcon from '@core/components/b-button-icon/BButtonIcon.vue';
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+
 import {mapGetters} from 'vuex' 
+
 
 
 
@@ -126,6 +128,7 @@ export default {
                     const index = this.currentProjectList.findIndex(e => e.id === id)
                     this.currentProjectList[index].status = res.data.status
                     if (res.data.status === 0) {    
+
                         this.$toast({
                             component: ToastificationContent,
                             props: {
@@ -168,6 +171,7 @@ export default {
         async getProjects() {
             let request = await this.$store.dispatch('projects/getProjects')
             if (request.data.length > 0) this.currentProjectList = request.data.map(e => ({ checked: e.status === 0, ...e }));
+
         },
     },
 
