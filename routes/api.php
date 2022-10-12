@@ -60,7 +60,7 @@ Route::get('/projects/availables', [ProjectController::class, 'availableProjects
 Route::get('/projects/{project_id}/groups/batchs', [GroupController::class, 'groupBatchsByProject']);
 Route::get('/projects/{project_id}/groups/onsale', [GroupController::class, 'groupsByProjectForSale']);
 Route::get('/projects/{project_id}/groups/', [GroupController::class, 'projectGroups']);
-Route::get('/projects/{project_id}/groups/', [GroupController::class, 'projectGroups']);
+Route::put('/projects/{project_id}/groups/', [GroupController::class, 'updateProjectGroups']);
 Route::patch('/change/status/{id}', [ProjectController::class, 'changeStatus']);
 Route::get('/groups/{group_id}/batchs/', [BatchController::class, 'groupBatchs']);
 Route::resource('batchs', BatchController::class);
