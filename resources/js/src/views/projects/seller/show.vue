@@ -12,7 +12,7 @@
 		</template>
 
 		<b-card-group class="d-flex flex-column justify-content-between">
-			<div v-if="groups.length <= 1">
+			<div v-if="groups.length === 0">
 				<h4>No hay Grupos Disponibles</h4>
 			</div>
 			<b-card v-for="(group, index) in groups" :key="index">
@@ -97,7 +97,7 @@ export default {
 		},
 
 		borderStatus(status){
-			return status === 1 ? 'available--border' : 'pending--border';  			
+			return status === 0 ? 'available--border' : 'pending--border';  			
 		},
 
 		initGroups(groupList) {

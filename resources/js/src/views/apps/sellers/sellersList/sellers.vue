@@ -82,9 +82,6 @@
   
       data() {
         return {
-          loaderRol: null,
-          token: sessionStorage.getItem('jwt'),
-          rol: sessionStorage.getItem('rol'),
           perPage: 5,
           currentPage: 1,
           sellers: [],
@@ -140,9 +137,7 @@
           return owed.length > 0 ? owed.reduce((accumulator, object) => { return accumulator + object.amount_owed }, 0) : 0
         },
         getSellers() {
-          this.$http.get('api/sellers', {
-            headers: {'Authorization' : `Bearer ${this.token}`}
-          })
+          this.$http.get('api/sellers')
             .then((res) => {
               console.log(res.data);
               this.sellers = res.data

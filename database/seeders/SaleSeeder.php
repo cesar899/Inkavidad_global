@@ -16,8 +16,8 @@ class SaleSeeder extends Seeder
     public function run()
     {
         DB::table('sales')->insert([
-        	'user_id' => 1,
-            'seller_id' => 1,
+        	'user_id' => 5,
+            'seller_id' => 4,
             'batch_id' => 1,
             'status' => 0,
             'amount' => 5000,

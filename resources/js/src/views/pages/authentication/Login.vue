@@ -303,8 +303,6 @@ export default {
           .then((res) => {
             this.tokenMutation(res.data.token)
             this.roleMutation(res.data.user.rol)
-            localStorage.setItem('jwt', res.data.token);
-            localStorage.setItem('rol', res.data.user.rol);
             if (res.data.user.rol === 1) {
               this.$ability.update([{
                 action: "manage",
@@ -312,7 +310,7 @@ export default {
               }
             ])
             }
-            this.$router.push('/dashboard/analytics');
+            this.$router.push({name: 'dashboard-analytics'});
           }).catch((error) => {       
             this.$refs.loginForm.setErrors(error.res);
           })

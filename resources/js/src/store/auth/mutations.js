@@ -1,6 +1,8 @@
 export function setToken(state, payload) {
-    state.token = localStorage.setItem('jwt', JSON.stringify(payload));
+    localStorage.setItem('jwt', JSON.stringify(payload));
+    state.token = payload
 }
 export function setRole(state, payload) {
-    state.role = localStorage.setItem('role', JSON.stringify(payload));
+    localStorage.setItem('role', JSON.stringify(payload));
+    state.role = payload
 }

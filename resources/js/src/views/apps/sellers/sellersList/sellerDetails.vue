@@ -15,6 +15,9 @@
         <template #cell(created_at)="data">
                 {{formatDate(data.item.created_at)}}
         </template>
+        <template #cell(status)="data">
+                {{status(data.item.status)}}
+        </template>
       </b-table>
       <b-pagination
         v-model="currentPage"
@@ -61,9 +64,6 @@ export default {
 
     data() {
         return {
-            loaderRol: null,
-            token: sessionStorage.getItem('jwt'),
-            rol: sessionStorage.getItem('rol'),
             perPage: 5,
             currentPage: 1,
             sales: [],
@@ -122,14 +122,21 @@ export default {
         this.getSeller()
     },
     methods: {
+        status(status){
+            if (status === 0) {
+                return 'Reservado'
+            } else if (status === 1) {
+                return 'Parcialmente pagado'
+            } else {
+                return 'Pagado'
+            }
+        },
         formatDate(date) {
             return moment(date).format('DD/MM/YYYY')
         },
         getSeller() {
             const id = this.$route.params.id;
-            this.$http.get(`api/seller/details/${id}`, {
-            headers: {'Authorization' : `Bearer ${this.token}`}
-          })
+            this.$http.get(`api/seller/details/${id}`)
             .then((res) => {
               console.log(res.data);
               const title = document.getElementById('titleDetails')

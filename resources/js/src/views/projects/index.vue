@@ -64,7 +64,7 @@
 
                         </div>
 
-                        <b-button class="" v-if="adminRole" :href="'/projects/'+ project.id" variant="primary">Ir a Grupo de lotes
+                        <b-button class="" v-if="showGroupsButton" :href="'/projects/'+ project.id" variant="primary">Ir a Grupo de lotes
                         </b-button>
                     </b-card>
                 </div>
@@ -79,7 +79,7 @@
 import { BFormCheckbox, BCardGroup, BCard, BCardText, BButton, BLink, BBadge, BIconBack, BListGroup, BListGroupItem } from 'bootstrap-vue'
 import BButtonIcon from '@core/components/b-button-icon/BButtonIcon.vue';
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
-
+import {mapGetters} from 'vuex' 
 
 
 
@@ -115,19 +115,17 @@ export default {
                     this.changeStatus(id)
                 } else {
                     const index = this.currentProjectList.findIndex(e => e.id === id) 
-                    this.currentProjectList[index].checked = status == 1 ? true : false
+                    this.currentProjectList[index].checked = status == 0 ? true : false
                     // project.checked = status == 1 ? true : false ;
                 }
             })
         },
         changeStatus(id) {
-            this.$http.patch(`/api/change/status/${id}`, {
-                headers: { 'Authorization': `Bearer ${this.token}` }
-            })
+            this.$http.patch(`/api/change/status/${id}`)
                 .then((res) => {
                     const index = this.currentProjectList.findIndex(e => e.id === id)
                     this.currentProjectList[index].status = res.data.status
-                    if (res.data.status === 1) {    
+                    if (res.data.status === 0) {    
                         this.$toast({
                             component: ToastificationContent,
                             props: {
@@ -151,15 +149,15 @@ export default {
                 })
         },
         statusString(project) {
-            return project?.status == 1 ? 'Activo' : 'Inactivo';
+            return project?.status == 0 ? 'Activo' : 'Inactivo';
         },
 
         statusIcon(project) {
-            return project?.status == 1 ? 'CheckIcon' : 'XCircleIcon';
+            return project?.status == 0 ? 'CheckIcon' : 'XCircleIcon';
         },
 
         statusColor(project) {
-            return project?.status == 1 ? 'icon--active' : 'icon--inactive';
+            return project?.status == 0 ? 'icon--active' : 'icon--inactive';
         },
 
         imgDescription(project) {
@@ -169,11 +167,17 @@ export default {
 
         async getProjects() {
             let request = await this.$store.dispatch('projects/getProjects')
-            if (request.data.length > 0) this.currentProjectList = request.data.map(e => ({ checked: e.status === 1, ...e }));
+            if (request.data.length > 0) this.currentProjectList = request.data.map(e => ({ checked: e.status === 0, ...e }));
         },
     },
 
     computed: {
+        ...mapGetters({
+        role: 'auth/role'
+        }),
+        showGroupsButton() {
+            return this.role === 1
+        },
         projects: {
             get() {
                 if (this.currentProjectList.length == 0) this.getProjects();
@@ -182,7 +186,6 @@ export default {
             set(value) { }
         },
     },
-
 }
 </script>
   

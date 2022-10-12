@@ -19,6 +19,7 @@ class OrderSeeder extends Seeder
         	'bank_name' => 'Banco de Venezuela',
             'ref_number' => '123456',
             'payment_proof' => '123456',
+            'amount' => 500,
             'status' => 0,
             'user_id' => 5,
             'seller_id' => 4,
