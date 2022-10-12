@@ -17,7 +17,7 @@
 							<h4>Grupo de lotes</h4>
 						</template>
 
-						<b-form-group class="scroll-body-car card-body--size" label="lotes disponibles"
+						<b-form-group class="scroll-body-car card-body--size" label="Lotes disponibles"
 							v-slot="{ ariaDescribedby }">
 							<b-form-checkbox-group @change="handlechangeGroupList()" v-model="currentActiveGroups"
 								:options="groups" name="groups" stacked>
@@ -163,7 +163,7 @@ export default {
 
 			try {
 				let request = await this.$store.dispatch('groups/saveGroupChangesByProject', newData)
-
+				console.log(request.data);
 				if (request.data) this.$toast({
 					component: ToastificationContent,
 					props: {
@@ -208,15 +208,15 @@ export default {
 		},
 
 		statusString() {
-			return this.project?.status == 1 ? 'Activo' : 'Inactivo';
+			return this.project?.status == 0 ? 'Activo' : 'Inactivo';
 		},
 
 		statusIcon() {
-			return this.project?.status == 1 ? 'CheckIcon' : 'XCircleIcon';
+			return this.project?.status == 0 ? 'CheckIcon' : 'XCircleIcon';
 		},
 
 		statusColor() {
-			return this.project?.status == 1 ? 'icon--active' : 'icon--inactive';
+			return this.project?.status == 0 ? 'icon--active' : 'icon--inactive';
 		}
 	}
 }

@@ -69,7 +69,7 @@
 		          <b-form-group
 		            label="Rol"
 		            label-for="rol"
-                v-if="loaderRol"
+                v-if="showRolesSelect"
 		          >
 		            <b-form-select 
 		            	v-model="user.rol" 
@@ -105,6 +105,7 @@ import {
   BTab, BTabs, BCard, BAlert, BLink, BRow, BCol, BForm, BFormGroup, BFormInput, BFormSelect, BFormRadioGroup, BFormCheckboxGroup, BButton, BCardText
 } from 'bootstrap-vue'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import {mapGetters} from 'vuex' 
 
 export default {
   components: {
@@ -128,8 +129,6 @@ export default {
   data() {
   	return {
       loaderRol: null,
-  		token: sessionStorage.getItem('jwt'),
-      rol: sessionStorage.getItem('rol'),
   		roles: [],
   		user: {
         name: '',
@@ -143,21 +142,19 @@ export default {
   },
 
   mounted() {
-    this.userRol()
   	this.getRoles()
   },
-
+  computed: {
+    ...mapGetters({
+        role: 'auth/role'
+      }),
+    showRolesSelect() {
+      return this.role === 1 
+    }
+  },
   methods: {
-    userRol() {
-      this.rol == 1 
-        ? this.loaderRol = true
-        : this.loaderRol = false
-    },
-
   	getRoles() {
-  		this.$http.get('/api/roles', {
-  			headers: {'Authorization' : `Bearer ${this.token}`} 
-  		})
+  		this.$http.get('/api/roles')
   		.then(res => {
   			this.roles = res.data
   		})
@@ -167,9 +164,7 @@ export default {
   	},
 
   	createUser() {
-  		this.$http.post(`/api/register/new/user`, this.user, {
-  			headers: {'Authorization' : `Bearer ${this.token}`} 
-  		})
+  		this.$http.post(`/api/register/new/user`)
   		.then(resp => {
         this.user = null
 
