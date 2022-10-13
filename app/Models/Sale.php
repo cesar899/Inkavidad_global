@@ -30,12 +30,17 @@ class Sale extends Model
 
     public function lote()
     {
-        return $this->belongsTo(Batch::class, 'batch_id', 'project_id');
+        return $this->belongsTo(Batch::class, 'batch_id');
     }
 
     public function project()
     {
         return $this->belongsTo(Batch::class, 'project_id');
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(Batch::class, 'group_id');
     }
 
 }

@@ -20,7 +20,7 @@
                 </b-button>
                 <b-button
                     variant="success">
-                    <span class="text-nowrap"><i data-feather='eye'></i></span>
+                    <span class="text-nowrap">Pay fee</span>
                 </b-button>
 
                 <!--<b-button
@@ -45,7 +45,7 @@
                 {{data.item.lote.project.name}}
             </template>
             <template #cell(grupo)="data">
-                {{data.item.lote.group_id}}
+                {{data.item.lote.group.name}}
             </template>
         </b-table>
 

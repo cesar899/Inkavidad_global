@@ -2,12 +2,12 @@
     <div>
         <template>
 			<h4>Lotes del proyecto</h4>
-			<feather-icon id="tooltip-back" @click="redirectToBack()" class="cursor-pointer icon--back" size="25"
-				icon="ArrowLeftIcon" />
-			<b-tooltip target="tooltip-back" triggers="hover">
-				Volver
-			</b-tooltip>
 		</template>
+        <feather-icon id="tooltip-back" @click="redirectToBack()" class="cursor-pointer icon--back" size="25"
+        icon="ArrowLeftIcon" />
+        <b-tooltip target="tooltip-back" triggers="hover">
+        Volver
+        </b-tooltip>
         <h3 class="ml-2 my-2" id="titleDetails"></h3>
         <b-table
         id="UserTable"
@@ -25,6 +25,19 @@
         </template>
         <template #cell(cliente)="data">
             {{data.item.user.name}}
+        </template>
+        <template #cell(vendedor)="data">
+            {{data.item.seller.name}}
+        </template>
+        <template #cell(estado)="data">
+            {{getStatus(data.item.status)}}
+        </template>
+        <template #cell(Action)="data">
+            <b-button
+                variant="danger"
+                v-on:click.prevent="showSale(data.item.id)">
+                <span class="text-nowrap">Download pdf</span>
+            </b-button>
         </template>
       </b-table>
       <b-pagination
@@ -89,8 +102,7 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'seller_id',
-                    label: 'Id del Vendedor',
+                    key: 'vendedor',
                     sortable: true
                 },
                 {
@@ -104,8 +116,7 @@ export default {
                     sortable: true
                 },
                {
-                    key: 'status',
-                    label: 'Estado',
+                    key: 'estado',
                     sortable: true
                 },
                 {
@@ -114,18 +125,12 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'amount_paid',
-                    label: 'Monto pagado',
-                    sortable: true
-                },
-                {
-                    key: 'dues',
-                    label: 'Deuda',
-                    sortable: true
-                },
-                {
                     key: 'created_at',
                     label: 'Fecha de creacion',
+                    sortable: true
+                },
+                {
+                    key: 'Action',
                     sortable: true
                 },
             ]
@@ -142,6 +147,25 @@ export default {
         this.index()
     },
     methods: {
+
+        getStatus(status){
+            let result
+            switch (status) {
+                case 0:
+                    result = 'En Espera'
+                    break;
+                case 1:
+                    result = 'Aprobado'
+                    break;
+                case 2:
+                    result = 'Cancelado'
+                    break;
+                default:
+                    break;
+            }
+           return result
+
+        },
 
         redirectToBack() {
 			this.$router.push('/sale-list');

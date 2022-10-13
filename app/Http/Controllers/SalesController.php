@@ -15,7 +15,7 @@ class SalesController extends Controller
      */
     public function index()
     {
-        $sale = Sale::with('user')->with('seller')->with('lote.project')->get();
+        $sale = Sale::with('user')->with('seller')->with('lote.project')->with('lote.group')->get();
         return response()->json($sale, 200);
     }
 
@@ -48,7 +48,7 @@ class SalesController extends Controller
      */
     public function show($id)
     {
-        $order = Order::where('sale_id',$id)->with([['user'],['seller']])->get();
+        $order = Order::where('sale_id',$id)->with('user')->with('seller')->get();
         return response()->json($order, 200);
     }
 
