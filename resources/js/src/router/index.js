@@ -3,7 +3,10 @@ import VueRouter from 'vue-router'
 import batchRoutes from './batchs/routes'
 import projectsRoutes from './projects/routes'
 import groupsRoutes from './groups/routes'
+import orderRoutes from './orders/routes'
+
 import store from '@/store'
+
 // Routes
 import { canNavigate } from '@/libs/acl/routeProtection'
 import { isUserLoggedIn, getUserData, getHomeRouteForLoggedInUser } from '@/auth/utils'
@@ -35,6 +38,7 @@ const router = new VueRouter({
     ...formsTable,
     ...uiElements,
     ...others,
+    ...orderRoutes,
     {
       path: '*',
       redirect: 'error-404',

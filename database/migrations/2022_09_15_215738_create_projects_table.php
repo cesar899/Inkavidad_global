@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('featured_image', 191);
             $table->string('plan', 191);
             $table->integer('group_quantity');
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->comment('0 - Active, 1 - Inactive');
             
             $table->timestamps();
         });
