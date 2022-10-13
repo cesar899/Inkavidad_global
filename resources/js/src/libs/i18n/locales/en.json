@@ -16,6 +16,9 @@
       "action": "Action"
     }
   },
+  "Projects list": "Listado de proyectos",
+  "Batchs": "Lotes",
+  "Groups create": "Creacion de grupos",
   "UI Elements": "UI Elements",
   "Forms & Tables": "Forms & Tables",
   "Pages": "Pages",
@@ -173,5 +176,6 @@
   "Layout Boxed": "Layout Boxed",
   "Without Menu": "Without Menu",
   "Layout Empty": "Layout Empty",
-  "Layout Blank": "Layout Blank"
+  "Layout Blank": "Layout Blank",
+  "Projects": "Proyectos"
 }

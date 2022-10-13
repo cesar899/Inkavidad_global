@@ -238,7 +238,7 @@ import { getHomeRouteForLoggedInUser } from '@/auth/utils'
 import { mapMutations } from 'vuex'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 import axios from 'axios'
-
+import helpers from '@/helpers/ability'
 export default {
   directives: {
     'b-tooltip': VBTooltip,
@@ -293,23 +293,49 @@ export default {
   methods: {
     ...mapMutations({
         tokenMutation: 'auth/setToken',
-        roleMutation: 'auth/setRole'
-  }), 
+        roleMutation: 'auth/setRole',
+        userMutation: 'auth/setUser'
+    }), 
+    setAbility(user) {
+      switch (user.rol) {
+        case 1:
+          this.$ability.update(helpers.admin)
+          user.ability = helpers.admin
+          break
+        case 2:
+          this.$ability.update(helpers.financian)
+          user.ability = helpers.financian
+          break
+        case 3:
+          this.$ability.update(helpers.accountant)
+          user.ability = helpers.accountant
+          break
+        case 4:
+          this.$ability.update(helpers.seller)
+          user.ability = helpers.seller
+          break
+        case 5:
+          this.$ability.update(helpers.user)
+          user.ability = helpers.user
+          break
+      }
+      this.userMutation(user)
+    },
     async login() {
+      
        this.$refs.loginForm.validate().then(async success => {
         if (success) {
-
           await this.$http.post('api/login', this.data)
           .then((res) => {
             this.tokenMutation(res.data.token)
             this.roleMutation(res.data.user.rol)
-            if (res.data.user.rol === 1) {
-              this.$ability.update([{
-                action: "manage",
-                subject: "all"
-              }
-            ])
-            }
+            this.setAbility(res.data.user)
+            //   this.$ability.update([{
+            //     action: "manage",
+            //     subject: "all"
+            //   }
+            // ])
+            
             this.$router.push({name: 'dashboard-analytics'});
           }).catch((error) => {       
             this.$refs.loginForm.setErrors(error.res);
