@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Repositories\Projects\ProjectRepository;
 use App\Http\Requests\Projects\StoreRequest;
@@ -43,6 +44,17 @@ class ProjectController extends Controller
         abort_if( !$projects, 404 ,'No existen proyectos disponibles');
         
         return response()->json($projects, 200);
+    }
+    public function changeStatus($id){
+        $project = Project::findOrFail($id);
+        if ($project->status == 0) {
+            $project->status = 1;
+            $project->save();
+        } else {
+            $project->status = 0;
+            $project->save();
+        }
+        return response()->json($project, 200);
     }
 
 }

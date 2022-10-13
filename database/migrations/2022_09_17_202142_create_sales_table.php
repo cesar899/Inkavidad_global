@@ -26,7 +26,7 @@ return new class extends Migration
             $table->foreignId('batch_id')
                 ->nullable()
                 ->constrained('batches');
-            $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('status')->default(0)->comment('0 - Reserved, 1 - Partially Paid, 2 - Paid');
             $table->double('amount', 8, 2)->default(0);
             $table->double('amount_paid', 8, 2)->default(0);
             $table->double('dues', 191)->nullable();

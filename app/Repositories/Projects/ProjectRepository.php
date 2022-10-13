@@ -44,10 +44,10 @@ class ProjectRepository
 				$query->where('status', 1);
 			},
 			'batchs as pending_batchs_count' => function (Builder $query) {
-				$query->where('status', CBatchStatus::BATCH_PENDING);
+				$query->where('status', CBatchStatus::BATCH_RESERVED);
 			},
 			'batchs as sold_batchs_count' => function (Builder $query) {
-				$query->where('status', CBatchStatus::BATCH_SOLD);
+				$query->where('status', CBatchStatus::BATCH_PAID);
 			}
 		])->get();
 		

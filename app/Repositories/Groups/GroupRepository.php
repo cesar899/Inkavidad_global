@@ -61,7 +61,7 @@ class GroupRepository
 						->where('status',CGroupStatus::GROUP_ACTIVE)
 						->with(['batchs'=> function ($query) {
 							$query->where('status', CBatchStatus::BATCH_AVAILABLE);
-							$query->orWhere('status', CBatchStatus::BATCH_PENDING);
+							$query->orWhere('status', CBatchStatus::BATCH_RESERVED);
 						}])
 						->get();
 		

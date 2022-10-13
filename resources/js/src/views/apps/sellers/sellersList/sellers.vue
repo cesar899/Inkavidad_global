@@ -30,10 +30,10 @@
             {{data.item.batches_sold.length}}
         </template>
         <template #cell(total_amount)="data">
-          {{getTotalAmount(data.item.orders_sold)}}
+          {{getTotalAmount(data.item.sales)}}
         </template>
         <template #cell(clients_amount_indebted)="data">
-          {{getAmountOwed(data.item.batches_sold)}}
+          {{getAmountOwed(data.item.sales)}}
         </template>
 
       </b-table>
@@ -82,9 +82,6 @@
 
       data() {
         return {
-          loaderRol: null,
-          token: sessionStorage.getItem('jwt'),
-          rol: sessionStorage.getItem('rol'),
           perPage: 5,
           currentPage: 1,
           sellers: [],
@@ -134,15 +131,13 @@
 
       methods: {
         getTotalAmount(solds) {
-          return solds.length > 0 ? solds.reduce((accumulator, object) => { return accumulator + object.amount }, 0) : 0
+          return solds.length > 0 ? solds.reduce((accumulator, object) => { return accumulator + object.amount_paid }, 0) : 0
         },
         getAmountOwed(owed) {
-          return owed.length > 0 ? owed.reduce((accumulator, object) => { return accumulator + object.amount_owed }, 0) : 0
+          return owed.length > 0 ? owed.reduce((accumulator, object) => { return accumulator + object.dues }, 0) : 0
         },
         getSellers() {
-          this.$http.get('api/sellers', {
-            headers: {'Authorization' : `Bearer ${this.token}`}
-          })
+          this.$http.get('api/sellers')
             .then((res) => {
               console.log(res.data);
               this.sellers = res.data

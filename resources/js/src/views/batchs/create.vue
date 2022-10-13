@@ -263,7 +263,6 @@ export default {
 			console.log({selectedGroup:this.selectedGroup})
 			if(!this.selectedGroup) return;
 			let request = await this.$store.dispatch('batchs/getBatchByGroup', this.selectedGroup);
-
 			if (request.data.length > 0) this.initBatchs(request.data);
 		},
 

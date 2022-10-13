@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import batchRoutes from './batchs/routes'
 import projectsRoutes from './projects/routes'
 import groupsRoutes from './groups/routes'
-
+import store from '@/store'
 // Routes
 import { canNavigate } from '@/libs/acl/routeProtection'
 import { isUserLoggedIn, getUserData, getHomeRouteForLoggedInUser } from '@/auth/utils'
@@ -43,7 +43,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const token = sessionStorage.getItem('jwt')
+  const token = store.getters['auth/token']
 
   if(!token){
     if(to.path !== '/login'){

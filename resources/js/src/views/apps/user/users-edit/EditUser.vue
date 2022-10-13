@@ -47,7 +47,7 @@
 		          <b-form-group
 		            label="Rol"
 		            label-for="rol"
-                v-if="loaderRol"
+                v-if="showRolesSelect"
 		          >
 		            <b-form-select 
 		            	v-model="user.rol" 
@@ -83,6 +83,7 @@
 import {
   BTab, BTabs, BCard, BAlert, BLink, BRow, BCol, BForm, BFormGroup, BFormInput, BFormSelect, BFormRadioGroup, BFormCheckboxGroup, BButton, BCardText
 } from 'bootstrap-vue'
+import {mapGetters} from 'vuex' 
 
 export default {
   components: {
@@ -106,8 +107,7 @@ export default {
   data() {
   	return {
       loaderRol: null,
-  		token: sessionStorage.getItem('jwt'),
-      rol: sessionStorage.getItem('rol'),
+  		
   		us: sessionStorage.getItem('user'),
   		roles: [],
   		user: {
@@ -120,22 +120,20 @@ export default {
   },
 
   mounted() {
-    this.userRol()
   	this.getRoles()
   	this.getUser()
   },
-
+  computed: {
+    ...mapGetters({
+        role: 'auth/role'
+      }),
+    showRolesSelect() {
+      return this.role === 1 
+    }
+  },
   methods: {
-    userRol() {
-      this.rol == 1 
-        ? this.loaderRol = true
-        : this.loaderRol = false
-    },
-
   	getRoles() {
-  		this.$http.get('/api/roles', {
-  			headers: {'Authorization' : `Bearer ${this.token}`} 
-  		})
+  		this.$http.get('/api/roles')
   		.then(res => {
   			this.roles = res.data
   		})
@@ -145,9 +143,7 @@ export default {
   	},
 
   	getUser() {
-  		this.$http.get(`/api/user/${this.us}`, {
-  			headers: {'Authorization' : `Bearer ${this.token}`} 
-  		})
+  		this.$http.get(`/api/user/${this.us}`)
   		.then(res => {
   			const {
 	  			name,
@@ -167,9 +163,7 @@ export default {
   	},
 
   	updateUser() {
-  		this.$http.put(`/api/edit/user/${this.us}`, this.user, {
-  			headers: {'Authorization' : `Bearer ${this.token}`} 
-  		})
+  		this.$http.put(`/api/edit/user/${this.us}`)
   		.then(resp => {
   			sessionStorage.removeItem('user')
 
