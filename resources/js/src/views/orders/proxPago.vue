@@ -22,6 +22,8 @@
 	   BCardText,
 	} from 'bootstrap-vue'
 
+	import {mapGetters} from 'vuex'
+
 	export default {
 		components: {
 	      	BButton,
@@ -39,16 +41,22 @@
 			this.status()
 		},
 
+		computed: {
+			...mapGetters({
+	        	date: 'batchs/fecha'
+	      	}),
+		},
+
 		methods: {
 			estados() {
 				this.$router.push('/estado/lotes')
 			},
 
 			status() {
-				const date = localStorage.getItem('pp')
-				const fe = new Date(date)
-				this.statu = fe.toLocaleDateString()
-				return this.statu
+				const date = this.date
+				const fecha = new Date(date)
+				this.statu = fecha.toLocaleDateString()
+				return this.statu			
 			}
 		}
 	}

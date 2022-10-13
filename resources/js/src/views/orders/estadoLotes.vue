@@ -42,6 +42,9 @@
 	   BPagination,
 	} from 'bootstrap-vue'
 
+	import store from '@/store/index'
+	import { mapMutations } from 'vuex'
+
 	export default {
 		components: {
 	      BButton,
@@ -109,6 +112,10 @@
 		},
 
 		methods: {
+			...mapMutations({
+			    fechaMutation: 'batchs/getdata',
+			}),
+
 			getSales() {
 				this.$http.get('/api/prueba/sale')
 		        .then((res) => {
@@ -123,7 +130,9 @@
 			},
 
 			proxPago(pay) {			
-				localStorage.setItem('pp', pay)
+				// localStorage.setItem('pp', pay)
+				// this.$store.commit('batchs/getdata', pay)
+				this.fechaMutation(pay)
 				this.$router.push('/estado/lotes/pago')
 			}
 		},
