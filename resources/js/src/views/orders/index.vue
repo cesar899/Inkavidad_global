@@ -124,6 +124,7 @@
 				this.$http.get('/api/prueba/order')
 		        .then((res) => {
 		           this.orders = res.data 
+				   console.log(this.orders)
 		        }).catch((e) => {       
 		           console.log(e)
 		        })

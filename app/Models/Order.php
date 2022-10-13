@@ -30,7 +30,7 @@ class Order extends Model
 
     public function batch() {   
         return $this->belongsTo(Batch::class);
-
+    }
     // public function user()
     // {
     //     return $this->belongsTo(User::class, 'user_id');
