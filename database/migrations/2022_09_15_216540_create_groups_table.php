@@ -13,10 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('batches', function (Blueprint $table) {
-            $table->foreignId('group_id')
+        Schema::create('groups', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 191);
+            $table->tinyInteger('status')->comment('0 - Active, 1 - Inactive');
+
+            $table->foreignId('project_id')
                 ->nullable()
-                ->constrained('groups');
+                ->constrained('projects');
+            $table->timestamps();
         });
     }
 
@@ -27,8 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('batches', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('groups');
     }
 };

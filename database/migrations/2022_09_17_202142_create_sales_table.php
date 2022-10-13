@@ -38,6 +38,23 @@ return new class extends Migration
             $table->string('amount_paid', 191);
             $table->string('dues', 191);
             $table->timestamp('next_pay', $precision = 0)->nullable()->dafaul(null);
+
+            // $table->foreignId('user_id')
+            //     ->nullable()
+            //     ->constrained('users');
+
+            // $table->foreignId('seller_id')
+            //     ->nullable()
+            //     ->constrained('users');
+
+            // $table->foreignId('batch_id')
+            //     ->nullable()
+            //     ->constrained('batches');
+            // $table->tinyInteger('status')->default(0)->comment('0 - Reserved, 1 - Partially Paid, 2 - Paid');
+            // $table->double('amount', 8, 2)->default(0);
+            // $table->double('amount_paid', 8, 2)->default(0);
+            // $table->double('dues', 191)->nullable();
+
             $table->timestamps();
         });
     }

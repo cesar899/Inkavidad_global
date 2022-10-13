@@ -124,6 +124,7 @@
 import {
   BNavItemDropdown, BDropdownItem, BDropdownDivider, BAvatar,
 } from 'bootstrap-vue'
+import { mapMutations } from 'vuex'
 import { initialAbility } from '@/libs/acl/config'
 import useJwt from '@/auth/jwt/useJwt'
 import { avatarText } from '@core/utils/filter'
@@ -148,18 +149,26 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+        tokenMutation: 'auth/setToken',
+        roleMutation: 'auth/setRole'
+    }),
     logout() {
       this.$http.post('/api/logout', {
         headers: {'Authorization' : `Bearer ${this.token}`}
       })
       .then(res => {
-        sessionStorage.removeItem('jwt')
-        sessionStorage.removeItem('rol')
+        this.tokenMutation(null)
+        this.roleMutation(null)
+        localStorage.removeItem('jwt')
+        localStorage.removeItem('role')
         this.$router.push('login')
       })
       .catch(e => {
-        sessionStorage.removeItem('jwt')
-        sessionStorage.removeItem('rol')
+        this.tokenMutation(null)
+        this.roleMutation(null)
+        localStorage.removeItem('jwt')
+        localStorage.removeItem('role')
         this.$router.push('login')
       })
 

@@ -15,7 +15,19 @@ return new class extends Migration
     {
         Schema::create('batches', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('project_id')
+                ->nullable()
+                ->constrained('projects');
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained('users');
 
+            $table->foreignId('seller_id')
+                ->nullable()
+                ->constrained('users');
+            $table->foreignId('group_id')
+                ->nullable()
+                ->constrained('groups');
             $table->string('name', 191);
 
             $table->string('mts_north', 191);
@@ -28,20 +40,10 @@ return new class extends Migration
             $table->string('adjoins_est', 191);
             $table->string('adjoins_west', 191);
 
-            $table->string('amount_owed', 191);
-            $table->string('amount', 191);
-            $table->tinyInteger('status')->default(1);
+            $table->double('amount_owed', 191);
+            $table->double('amount', 191);
+            $table->tinyInteger('status')->default(0)->comment('0 - Available, 1 - Reserved, 2 - Partially Paid, 3 - Paid, 4 - legal, 5 - Lawful Failed, 6 - Complete');
 
-            $table->foreignId('project_id')
-                ->nullable()
-                ->constrained('projects');
-            $table->foreignId('user_id')
-                ->nullable()
-                ->constrained('users');
-
-            $table->foreignId('seller_id')
-                ->nullable()
-                ->constrained('users');
 
             $table->timestamps();
         });

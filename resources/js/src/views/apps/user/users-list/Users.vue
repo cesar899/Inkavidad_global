@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mb-2" v-if="loaderRol">
+    <div class="mb-2" v-if="showCreateButton">
       <b-button 
         variant="success"
         v-on:click.prevent="create">
@@ -20,7 +20,7 @@
       :per-page="perPage"
       :current-page="currentPage">
 
-      <template #cell(Action)="data" v-if="loaderRol">
+      <template #cell(Action)="data" v-if="showCreateButton">
         <b-button 
           variant="warning"
           v-on:click.prevent="editUser(data.item.id)">
@@ -45,7 +45,8 @@
 </template>
 
 <script>
-  import {
+  import { throws } from 'assert'
+import {
     // BCard,
     // BRow,
     // BCol,
@@ -60,6 +61,7 @@
     // BDropdownItem,
     BPagination,
   } from 'bootstrap-vue'
+  import {mapGetters} from 'vuex' 
 
   export default {
     components: {
@@ -80,9 +82,6 @@
 
     data() {
       return {
-        loaderRol: null,
-        token: sessionStorage.getItem('jwt'),
-        rol: sessionStorage.getItem('rol'),
         perPage: 5,
         currentPage: 1,
         users: [],
@@ -108,9 +107,6 @@
             label: 'Rol',
             sortable: true
           },
-          {
-            key: 'Action',
-          },
         ]
       }
     },
@@ -118,25 +114,27 @@
     computed: {
       rows() {
         return this.users.length
+      },
+      ...mapGetters({
+        role: 'auth/role'
+      }),
+      showCreateButton() {
+        return this.role === 1 || this.role === 4
       }
     },
 
     created() {
       this.showUsers()
-      this.userRol()
+      if (this.role === 1 || this.role === 4 ) {
+        this.fields.push({
+          key: 'Action',
+        })
+      }
     },
 
     methods: {
-      userRol(){
-        this.rol == 1 || this.rol == 4
-          ? this.loaderRol = true
-          : this.loaderRol = false
-      },
-
       showUsers() {
-        this.$http.get('api/users', {
-          headers: {'Authorization' : `Bearer ${this.token}`}
-        })
+        this.$http.get('api/users')
           .then((res) => {
             this.users = res.data
           }).catch((error) => {       
