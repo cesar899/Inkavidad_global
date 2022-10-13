@@ -23,7 +23,7 @@
 				<b-card-group class="d-flex" deck>
 
 					<div v-for="(batch, indB) in group.batchs" :key="indB" class="pb-1">
-						
+
 						<b-link
 							:to="'/batchs/'+ batch.id + '/selection'"
 						>
@@ -33,10 +33,10 @@
 								</template>
 
 								<b-card-text>
-									Precio financiado: {{batch.amount_owed}}
+									Precio total: {{batch.amount}}
 								</b-card-text>
 								<b-card-text>
-									Precio de contado: {{batch.amount}}
+									Precio de contado: {{batch.amount_owed}}
 								</b-card-text>
 
 							</b-card>
@@ -57,7 +57,7 @@
 
 <script>
 import {
-	BCard, BCardText, BCardGroup, BFormGroup, BInputGroup, BFormCheckbox, BTooltip, BCardTitle, BImg, 
+	BCard, BCardText, BCardGroup, BFormGroup, BInputGroup, BFormCheckbox, BTooltip, BCardTitle, BImg,
 	BForm, BButton, BFormFile, BModal, BFormCheckboxGroup, BLink, BOverlay
 } from 'bootstrap-vue'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
@@ -97,7 +97,7 @@ export default {
 		},
 
 		borderStatus(status){
-			return status === 0 ? 'available--border' : 'pending--border';  			
+			return status === 0 ? 'available--border' : 'pending--border';
 		},
 
 		initGroups(groupList) {

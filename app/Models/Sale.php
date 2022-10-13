@@ -18,6 +18,10 @@ class Sale extends Model
         'amount',
         'amount_paid',
         'dues',
+        'cuote_account',
+        'cuote_paid',
+        'paid_comming',
+        'paid_comming'
     ];
     public function user()
     {
