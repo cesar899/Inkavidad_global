@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <template>
 			<h4>Lotes del proyecto</h4>
 		</template>
