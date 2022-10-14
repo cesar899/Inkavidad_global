@@ -16,4 +16,15 @@ class CustomerController extends Controller
     	
     	return response()->json($cliente, 200);
     }
+
+    public function customerDetails($id) {
+    	$details = User::where('id', $id)
+    	->with(
+    		'buy', 
+    		'batches', 
+    		'orders'
+    	)->get();
+
+    	return response()->json($details, 200);
+    }
 }

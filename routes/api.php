@@ -56,6 +56,12 @@ Route::controller(PasswordResetController::class)->group(
 			Route::get('/seller/details/{id}', 'getSellerDetails');
 	});
 
+	Route::controller(CustomerController::class)->group(
+		function($router) {
+			Route::get('/customers', 'getCustomers');
+			Route::get('/customer/details/{id}', 'customerDetails');
+	});
+
 	Route::get('roles', [RoleController::class, 'index']);
 // });
 Route::get('/projects/availables', [ProjectController::class, 'availableProjects']);
@@ -73,5 +79,3 @@ Route::resource('orders', OrderController::class);
 
 Route::get('/prueba/order', [OrderController::class, 'showOrder']);
 Route::get('/prueba/sale', [SaleController::class, 'index']);
-
-Route::get('/customers', [CustomerController::class, 'getCustomers']);
