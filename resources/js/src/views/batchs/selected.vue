@@ -25,27 +25,24 @@
 
                     <b-form>
                         <b-form-group label-class="font-weight-bold" label-size="lg" label="Comprador">
+
                             <b-form-group label="Usuario" label-for="usuario">
-                                <select v-model="selected">
-                                    <option disabled value="">Seleccione un elemento</option>
-                                    <option>A</option>
-                                    <option>B</option>
-                                    <option>C</option>
-                                </select>
-                                <span>Seleccionado: {{ selected }}</span>
+                                <b-form-select v-model="selected" :options="options">
+
+                                </b-form-select>
                             </b-form-group>
 
 
-                            <b-form-group label="Nombre" label-for="first-name">
-                                <validation-provider #default="{ errors }" name="FirstName" rules="required">
-                                    <b-form-input id="first-name" v-model="selectedBatchForm.firstName"
-                                        :state="errors.length > 0 ? false:null" name="first-name"
-                                        placeholder="Nombre" />
+                            <b-form-group label="lapso de dias entre cuotas" label-for="paid_comming">
+                                <validation-provider #default="{ errors }" name="paid_comming" rules="required">
+                                    <b-form-input id="paid_comming" v-model="selectedBatchForm.paid_comming"
+                                        :state="errors.length > 0 ? false:null" name="paid_comming"
+                                        placeholder="dias" />
                                     <small class="text-danger">{{ errors[0] }}</small>
                                 </validation-provider>
                             </b-form-group>
 
-                            <b-form-group label="Apellido" label-for="last-name">
+                            <!--<b-form-group label="Apellido" label-for="last-name">
                                 <validation-provider #default="{ errors }" name="LastName" rules="required">
                                     <b-form-input id="last-name" v-model="selectedBatchForm.lastName"
                                         :state="errors.length > 0 ? false:null" name="last-name"
@@ -78,7 +75,7 @@
                                         placeholder="Número Telefónico" type="tel" />
                                     <small class="text-danger">{{ errors[0] }}</small>
                                 </validation-provider>
-                            </b-form-group>
+                            </b-form-group>-->
 
                             <b-form-group label="Saldo Inicial" label-for="starting-balance">
                                 <validation-provider #default="{ errors }" name="Starting_balance" rules="required">
@@ -149,6 +146,7 @@
 </template>
 
 <script>
+import { BFormSelect } from 'bootstrap-vue'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import { required } from '@validations'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
@@ -156,6 +154,7 @@ import { BForm, BFormGroup, BFormInput, BFormFile, BCard, BCardText, BTooltip, B
 
 export default {
     components: {
+        BFormSelect,
         BForm,
         BFormGroup,
         BFormInput,
@@ -171,16 +170,15 @@ export default {
     data() {
         return {
             selectedBatchForm: {
-                firstName: '',
-                lastName: '',
-                dni: '',
-                address: '',
-                phoneNumber: '',
                 startingBalance: 0,
                 paymentProof: null,
                 bank: '',
                 refNumber: '',
             },
+            selected: null,
+                options: [
+
+            ],
             batch: null,
             isLoading: false,
             stepView: 1,
@@ -199,7 +197,8 @@ export default {
             try {
                 const batchId = this.$route.params.batch_id;
                 const requestBatch = await this.$store.dispatch('batchs/getBatch', batchId)
-                this.batch = requestBatch.data;
+                this.batch = requestBatch.data.batch;
+                this.options =  requestBatch.data.users;
 
             } catch (error) {
                 this.$router.push('./');
@@ -256,12 +255,11 @@ export default {
                     ref_number: this.selectedBatchForm.refNumber,
                     voucher: this.selectedBatchForm.paymentProof ?? '',
                     amount: parseInt(this.selectedBatchForm.startingBalance, 10),
-                    name: this.selectedBatchForm.firstName,
-                    last_name: this.selectedBatchForm.lastName,
-                    dni: this.selectedBatchForm.dni,
-                    address: this.selectedBatchForm.address,
-                    phone: this.selectedBatchForm.phoneNumber,
+                    user_id: this.selected,
+                    paid_comming: this.selectedBatchForm.paid_comming,
+
                 }
+                console.log(selectionBatchData);
 
                 const request = await this.$store.dispatch('orders/save', selectionBatchData)
                 if (request.data)

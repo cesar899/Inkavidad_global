@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\User;
 use App\Repositories\Batchs\BatchRepository;
 use App\Http\Requests\Batchs\StoreRequest;
 use App\Constants\CBatchStatus;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 class BatchController extends Controller
 {
@@ -23,11 +24,27 @@ class BatchController extends Controller
 
     public function show(Request $request){
         $batch = $this->repository->getBatch($request->batch);
+        $users = User::where('rol', 5)->get();
+
+        $collection = new EloquentCollection();
+
+        foreach ($users as $user) {
+            $dataUser = new \stdClass();
+            $dataUser->value = $user->id;
+            $dataUser->text = $user->name .' '. $user->last_name;
+            $collection->push($dataUser);
+        }
         info($batch);
         abort_if( !$batch, 404 ,'No se encontro registro');
         abort_if( $batch->status != CBatchStatus::BATCH_AVAILABLE, 404 ,'Lote no disponible');
 
-        return response()->json($batch, 200);
+        $response = [
+            'status' => 'success',
+            'users' => $collection,
+            'batch' => $batch
+       ];
+
+        return response()->json($response, 200);
     }
 
     public function store (StoreRequest $request){
@@ -39,7 +56,7 @@ class BatchController extends Controller
 
     public function groupBatchs(Request $request) {
         $batchs = $this->repository->getBatchsGroup($request->group_id);
-        $user = User::where('id', '!=', 1)->get();
+
         abort_if( !$batchs, 500 ,'Error del servidor');
 
         return response()->json($batchs, 200);
