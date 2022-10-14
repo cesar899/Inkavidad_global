@@ -1,9 +1,9 @@
 <template>
-    <b-overlay 
-        :show="isLoading || currentBatch === null" 
-        spinner-variant="primary" 
-        blur="0" 
-        opacity=".75" 
+    <b-overlay
+        :show="isLoading || currentBatch === null"
+        spinner-variant="primary"
+        blur="0"
+        opacity=".75"
         rounded="sm"
     >
         <b-card>
@@ -25,6 +25,16 @@
 
                     <b-form>
                         <b-form-group label-class="font-weight-bold" label-size="lg" label="Comprador">
+                            <b-form-group label="Usuario" label-for="usuario">
+                                <select v-model="selected">
+                                    <option disabled value="">Seleccione un elemento</option>
+                                    <option>A</option>
+                                    <option>B</option>
+                                    <option>C</option>
+                                </select>
+                                <span>Seleccionado: {{ selected }}</span>
+                            </b-form-group>
+
 
                             <b-form-group label="Nombre" label-for="first-name">
                                 <validation-provider #default="{ errors }" name="FirstName" rules="required">
@@ -137,7 +147,7 @@
     </b-overlay>
 
 </template>
-  
+
 <script>
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import { required } from '@validations'
@@ -181,7 +191,7 @@ export default {
         redirectToBack() {
             const projectId = this.batch.project_id;
             if(!projectId) return;
-            
+
             this.$router.push(`/projects/${projectId}/groups/sell`);
         },
 
@@ -260,7 +270,7 @@ export default {
                         props: {
                             title: 'Orden Generada',
                             icon: 'CheckIcon',
-                            variant: 'success',
+                             variant: 'success',
                         },
                     })
             } catch (error) {
@@ -286,8 +296,7 @@ export default {
 
 }
 </script>
-  
+
 <style>
 
 </style>
-  

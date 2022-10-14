@@ -17,7 +17,7 @@ class BatchController extends Controller
     public function index(Request $request){
         $batchs = $this->repository->getBatchs();
         abort_if( !$batchs, 500 ,'Error del servidor');
-        
+
         return response()->json($batchs, 200);
     }
 
@@ -26,10 +26,10 @@ class BatchController extends Controller
         info($batch);
         abort_if( !$batch, 404 ,'No se encontro registro');
         abort_if( $batch->status != CBatchStatus::BATCH_AVAILABLE, 404 ,'Lote no disponible');
-        
+
         return response()->json($batch, 200);
     }
-    
+
     public function store (StoreRequest $request){
         info($request->validated());
         $batch = $this->repository->create($request->validated());
@@ -39,8 +39,9 @@ class BatchController extends Controller
 
     public function groupBatchs(Request $request) {
         $batchs = $this->repository->getBatchsGroup($request->group_id);
+        $user = User::where('id', '!=', 1)->get();
         abort_if( !$batchs, 500 ,'Error del servidor');
-        
+
         return response()->json($batchs, 200);
 
     }
