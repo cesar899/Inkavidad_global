@@ -37,5 +37,5 @@ class Sale extends Model
     // public function seller()
     // {
     //     return $this->belongsTo(User::class, 'seller_id');
-    // }
+    }
 }

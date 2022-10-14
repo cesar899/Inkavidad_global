@@ -11,6 +11,7 @@ use App\Http\Controllers\SellersController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,3 +73,5 @@ Route::resource('orders', OrderController::class);
 
 Route::get('/prueba/order', [OrderController::class, 'showOrder']);
 Route::get('/prueba/sale', [SaleController::class, 'index']);
+
+Route::get('/customers', [CustomerController::class, 'getCustomers']);

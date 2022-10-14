@@ -131,10 +131,18 @@
   
       methods: {
         getTotalAmount(solds) {
-          return solds.length > 0 ? solds.reduce((accumulator, object) => { return accumulator + object.amount_paid }, 0) : 0
+          return solds.length > 0 ? solds.reduce((accumulator, object) => { 
+              var x = parseFloat(accumulator)  
+              var y = parseFloat(object.amount_paid)
+              return x + y
+            }, 0) : 0
         },
         getAmountOwed(owed) { 
-          return owed.length > 0 ? owed.reduce((accumulator, object) => { return accumulator + object.dues }, 0) : 0
+          return owed.length > 0 ? owed.reduce((accumulator, object) => { 
+              var x = parseFloat(accumulator) 
+              var y = parseFloat(object.dues)
+              return x + y
+            }, 0) : 0
         },
         getSellers() {
           this.$http.get('api/sellers')
