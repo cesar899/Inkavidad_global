@@ -137,6 +137,7 @@
               return x + y
             }, 0) : 0
         },
+
         getAmountOwed(owed) { 
           return owed.length > 0 ? owed.reduce((accumulator, object) => { 
               var x = parseFloat(accumulator) 
@@ -144,6 +145,7 @@
               return x + y
             }, 0) : 0
         },
+        
         getSellers() {
           this.$http.get('api/sellers')
             .then((res) => {
