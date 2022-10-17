@@ -11,6 +11,7 @@ use App\Http\Controllers\SellersController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,12 @@ Route::controller(PasswordResetController::class)->group(
 		function($router) {
 			Route::get('/sellers', 'getSellers');
 			Route::get('/seller/details/{id}', 'getSellerDetails');
+	});
+
+	Route::controller(CustomerController::class)->group(
+		function($router) {
+			Route::get('/customers', 'getCustomers');
+			Route::get('/customer/details/{id}', 'customerDetails');
 	});
 
 	Route::get('roles', [RoleController::class, 'index']);

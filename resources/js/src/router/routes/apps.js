@@ -225,7 +225,17 @@ export default [
   //   name: 'apps-users-edit',
   //   component: () => import('@/views/apps/user/users-edit/UsersEdit.vue'),
   // },
-
+  //Rutas Customer
+  {
+    path: '/clientes/lista',
+    name: 'lista-clientes',
+    component: () => import('@/views/apps/customers/customersList/Customers.vue'),
+  },
+  {
+    path: '/clientes/detalles/:id',
+    name: 'detalles-clientes',
+    component: () => import('@/views/apps/customers/customersList/CustomersDetails.vue'),
+  },
   // Invoice
   {
     path: '/apps/invoice/list',
