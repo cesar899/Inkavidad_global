@@ -15,6 +15,10 @@ const admin = [
         action: "read",
         subject: "sellersList",
     },
+    {
+        action: "read",
+        subject: "clientsList",
+    },
 ];
 const seller = [
     {
@@ -28,6 +32,10 @@ const seller = [
     {
         action: "read",
         subject: "sellersList",
+    },
+    {
+        action: "read",
+        subject: "clientsList",
     },
 ];
 export default { admin, seller };
