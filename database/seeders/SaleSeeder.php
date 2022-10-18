@@ -22,7 +22,7 @@ class SaleSeeder extends Seeder
             'status' => 0,
             'amount' => 5000,
             'amount_paid' => 500,
-            'day_payment' => date('Y-m-d H:m:s'),
+            'next_pay' => date('Y-m-d H:m:s'),
             'cuote_account' => 5,
             'cuote_paid' => 2,
             'paid_comming' => 5,
