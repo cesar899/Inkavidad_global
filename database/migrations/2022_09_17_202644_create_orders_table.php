@@ -29,13 +29,13 @@ return new class extends Migration
             $table->foreignId('batch_id')
                 ->nullable()
                 ->constrained('batches');
+
+
             $table->string('bank_name', 191)->nullable();
             $table->string('ref_number', 191)->nullable();
             $table->string('payment_proof', 191)->nullable();
             $table->double('amount', 8, 2)->default(0);
             $table->tinyInteger('status')->default(0)->comment('0 - Pending, 1 - Completed, 2 - Cancelled');
-
-
             $table->timestamps();
         });
     }

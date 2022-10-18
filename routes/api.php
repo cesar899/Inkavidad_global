@@ -11,7 +11,8 @@ use App\Http\Controllers\SellersController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\OrderController;
-use Illuminate\Routing\RouteGroup;
+use App\Http\Controllers\SaleController;
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,9 +39,9 @@ Route::controller(PasswordResetController::class)->group(
 });
 
 //rutas con token
-// Route::group([
-//  	'middleware' => ['jwt.verify'],
-// ], function ($router) {
+ Route::group([
+ 	'middleware' => ['jwt.verify'],
+ ], function ($router) {
 
 	Route::controller(UserController::class)->group(
 		function($router) {
@@ -54,6 +55,12 @@ Route::controller(PasswordResetController::class)->group(
 		function($router) {
 			Route::get('/sellers', 'getSellers');
 			Route::get('/seller/details/{id}', 'getSellerDetails');
+	});
+
+	Route::controller(CustomerController::class)->group(
+		function($router) {
+			Route::get('/customers', 'getCustomers');
+			Route::get('/customer/details/{id}', 'customerDetails');
 	});
 
 	Route::get('roles', [RoleController::class, 'index']);
@@ -77,3 +84,5 @@ Route::controller(SalesController::class)->group(
         Route::get('/sale/details/{id}', 'show');
 });
 
+Route::get('/prueba/order', [OrderController::class, 'showOrder']);
+Route::get('/prueba/sale', [SaleController::class, 'index']);

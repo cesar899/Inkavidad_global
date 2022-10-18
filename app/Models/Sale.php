@@ -27,9 +27,9 @@ class Sale extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-    public function seller()
-    {
-        return $this->belongsTo(User::class, 'seller_id');
+
+    public function seller() {
+    	return $this->belongsTo(User::class);
     }
 
     public function lote()

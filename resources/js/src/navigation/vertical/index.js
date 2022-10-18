@@ -39,6 +39,11 @@ import formAndTable from './forms-and-table'
 import batches from './batches'
 import projects from './projects'
 import groups from './groups'
+import users from './users'
+import orders from './orders'
+import sellers from './sellers'
+import sellerBatch from './sellerBatch'
+import clients from './clients'
 
 // Array of sections
-export default [...dashboard, ...appsAndPages, ...uiElements, ...formAndTable, ...chartsAndMaps, ...others, batches, ...projects, ...groups]
+export default [...clients, ...sellerBatch, ...sellers, ...orders, ...users, ...dashboard, ...appsAndPages, ...uiElements, ...formAndTable, ...chartsAndMaps, ...others, ...batches, ...projects, ...groups]

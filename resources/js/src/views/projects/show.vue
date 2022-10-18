@@ -23,11 +23,9 @@
 								:options="groups" name="groups" stacked>
 							</b-form-checkbox-group>
 						</b-form-group>
-
 						<b-button type="submit" variant="primary" block :disabled="hasChange" @click="saveGroupChanges">
 							Guardar Cambios
 						</b-button>
-
 					</b-card>
 
 					<b-card v-if="project != null" class="card__project"
@@ -109,7 +107,7 @@ export default {
 
 		initGroups(groupList) {
 			this.availableGroups = groupList
-				.map(group => ({ text: group.name, value: group.id, checked: Boolean(group.status) }))
+				.map(group => ({ text: group.name, value: group.id, checked: Boolean(!group.status) }))
 				.sort((a, b) => (a.value - b.value));
 
 			this.currentActiveGroups = this.availableGroups

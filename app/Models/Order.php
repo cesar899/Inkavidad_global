@@ -20,13 +20,25 @@ class Order extends Model
         'seller_id',
         'batch_id',
     ];
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
+
+    public function user() {
+        return $this->belongsTo(User::class);
     }
-    public function seller()
-    {
-        return $this->belongsTo(User::class, 'seller_id');
+
+    public function seller() {
+        return $this->belongsTo(User::class);
     }
+
+    public function batch() {   
+        return $this->belongsTo(Batch::class);
+    }
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class, 'user_id');
+    // }
+    // public function seller()
+    // {
+    //     return $this->belongsTo(User::class, 'seller_id');
+    // }
 }
 

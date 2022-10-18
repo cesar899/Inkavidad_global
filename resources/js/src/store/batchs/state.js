@@ -1,3 +1,4 @@
 export default {
-  batchs: null
+  batchs: null,
+  data: null,
 }
