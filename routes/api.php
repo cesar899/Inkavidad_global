@@ -8,7 +8,6 @@ use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SellersController;
-use App\Http\Controllers\SalesController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SaleController;
@@ -64,25 +63,28 @@ Route::controller(PasswordResetController::class)->group(
 	});
 
 	Route::get('roles', [RoleController::class, 'index']);
-// });
-Route::get('/projects/availables', [ProjectController::class, 'availableProjects']);
-Route::get('/projects/{project_id}/groups/batchs', [GroupController::class, 'groupBatchsByProject']);
-Route::get('/projects/{project_id}/groups/onsale', [GroupController::class, 'groupsByProjectForSale']);
-Route::get('/projects/{project_id}/groups/', [GroupController::class, 'projectGroups']);
-Route::put('/projects/{project_id}/groups/', [GroupController::class, 'updateProjectGroups']);
-Route::patch('/change/status/{id}', [ProjectController::class, 'changeStatus']);
-Route::get('/groups/{group_id}/batchs/', [BatchController::class, 'groupBatchs']);
-Route::resource('batchs', BatchController::class);
-Route::resource('projects', ProjectController::class);
-Route::resource('groups', GroupController::class);
-Route::resource('orders', OrderController::class);
-
-//Rutas para ventas
-Route::controller(SalesController::class)->group(
-    function($router) {
-        Route::get('/sales', 'index');
-        Route::get('/sale/details/{id}', 'show');
 });
 
-Route::get('/prueba/order', [OrderController::class, 'showOrder']);
-Route::get('/prueba/sale', [SaleController::class, 'index']);
+    Route::get('/projects/availables', [ProjectController::class, 'availableProjects']);
+    Route::get('/projects/{project_id}/groups/batchs', [GroupController::class, 'groupBatchsByProject']);
+    Route::get('/projects/{project_id}/groups/onsale', [GroupController::class, 'groupsByProjectForSale']);
+    Route::get('/projects/{project_id}/groups/', [GroupController::class, 'projectGroups']);
+    Route::put('/projects/{project_id}/groups/', [GroupController::class, 'updateProjectGroups']);
+    Route::patch('/change/status/{id}', [ProjectController::class, 'changeStatus']);
+    Route::get('/groups/{group_id}/batchs/', [BatchController::class, 'groupBatchs']);
+    Route::resource('batchs', BatchController::class);
+    Route::resource('projects', ProjectController::class);
+    Route::resource('groups', GroupController::class);
+    Route::resource('orders', OrderController::class);
+
+    //Rutas para ventas
+    Route::controller(SaleController::class)->group(
+        function($router) {
+            Route::get('/sales', 'Sales');
+            Route::get('/sale/details/{id}', 'show');
+    });
+
+    Route::get('/prueba/order', [OrderController::class, 'showOrder']);
+    Route::get('/prueba/sale', [SaleController::class, 'index']);
+
+

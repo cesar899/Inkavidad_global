@@ -42,41 +42,6 @@
                                 </validation-provider>
                             </b-form-group>
 
-                            <!--<b-form-group label="Apellido" label-for="last-name">
-                                <validation-provider #default="{ errors }" name="LastName" rules="required">
-                                    <b-form-input id="last-name" v-model="selectedBatchForm.lastName"
-                                        :state="errors.length > 0 ? false:null" name="last-name"
-                                        placeholder="Apellido" />
-                                    <small class="text-danger">{{ errors[0] }}</small>
-                                </validation-provider>
-                            </b-form-group>
-
-                            <b-form-group label="DNI" label-for="dni">
-                                <validation-provider #default="{ errors }" name="Dni" rules="required">
-                                    <b-form-input id="dni" v-model="selectedBatchForm.dni"
-                                        :state="errors.length > 0 ? false:null" name="dni" placeholder="DNI" />
-                                    <small class="text-danger">{{ errors[0] }}</small>
-                                </validation-provider>
-                            </b-form-group>
-
-                            <b-form-group label="Dirección" label-for="address">
-                                <validation-provider #default="{ errors }" name="Address" rules="required">
-                                    <b-form-input id="address" v-model="selectedBatchForm.address"
-                                        :state="errors.length > 0 ? false:null" name="address"
-                                        placeholder="Dirección" />
-                                    <small class="text-danger">{{ errors[0] }}</small>
-                                </validation-provider>
-                            </b-form-group>
-
-                            <b-form-group label="Número Telefónico" label-for="phone-number">
-                                <validation-provider #default="{ errors }" name="Phone_number" rules="required">
-                                    <b-form-input id="phone-number" v-model="selectedBatchForm.phoneNumber"
-                                        :state="errors.length > 0 ? false:null" name="phone-number"
-                                        placeholder="Número Telefónico" type="tel" />
-                                    <small class="text-danger">{{ errors[0] }}</small>
-                                </validation-provider>
-                            </b-form-group>-->
-
                             <b-form-group label="Saldo Inicial" label-for="starting-balance">
                                 <validation-provider #default="{ errors }" name="Starting_balance" rules="required">
                                     <b-form-input id="starting-balance" v-model="selectedBatchForm.startingBalance"
@@ -169,6 +134,7 @@ export default {
     },
     data() {
         return {
+            seller: JSON.parse(localStorage.getItem('userData')),
             selectedBatchForm: {
                 startingBalance: 0,
                 paymentProof: null,
@@ -247,6 +213,7 @@ export default {
 
         async saveOrder() {
             const batchId = this.$route.params.batch_id;
+            console.log(this.seller.id);
             try {
                 this.isLoading = true;
                 const selectionBatchData = {
@@ -255,6 +222,7 @@ export default {
                     ref_number: this.selectedBatchForm.refNumber,
                     voucher: this.selectedBatchForm.paymentProof ?? '',
                     amount: parseInt(this.selectedBatchForm.startingBalance, 10),
+                    seller: this.seller.id,
                     user_id: this.selected,
                     paid_comming: this.selectedBatchForm.paid_comming,
 
