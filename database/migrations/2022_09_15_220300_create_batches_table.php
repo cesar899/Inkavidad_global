@@ -1,0 +1,61 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('batches', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('project_id')
+                ->nullable()
+                ->constrained('projects');
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained('users');
+
+            $table->foreignId('seller_id')
+                ->nullable()
+                ->constrained('users');
+            $table->foreignId('group_id')
+                ->nullable()
+                ->constrained('groups');
+            $table->string('name', 191);
+
+            $table->string('mts_north', 191);
+            $table->string('mts_south', 191);
+            $table->string('mts_est', 191);
+            $table->string('mts_west', 191);
+            
+            $table->string('adjoins_north', 191);
+            $table->string('adjoins_south', 191);
+            $table->string('adjoins_est', 191);
+            $table->string('adjoins_west', 191);
+
+            $table->double('amount_owed', 191);
+            $table->double('amount', 191);
+            $table->tinyInteger('status')->default(0)->comment('0 - Available, 1 - Reserved, 2 - Partially Paid, 3 - Paid, 4 - legal, 5 - Lawful Failed, 6 - Complete');
+
+
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('batches');
+    }
+};

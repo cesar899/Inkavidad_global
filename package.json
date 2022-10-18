@@ -31,6 +31,7 @@
     "vue-template-compiler": "2.6.12"
   },
   "dependencies": {
+    "@casl/ability": "^6.1.1",
     "@casl/vue": "1.1.1",
     "@fullcalendar/common": "5.x",
     "@fullcalendar/core": "5.x",
@@ -56,6 +57,7 @@
     "echarts": "4.8.0",
     "jsonwebtoken": "8.5.1",
     "leaflet": "1.6.0",
+    "moment": "^2.29.4",
     "portal-vue": "2.1.7",
     "postcss-rtl": "1.7.3",
     "prismjs": "1.19.0",
@@ -83,7 +85,7 @@
     "vue-router": "3.4.9",
     "vue-select": "3.11.2",
     "vue-slider-component": "3.2.11",
-    "vue-sweetalert2": "4.1.1",
+    "vue-sweetalert2": "^4.1.1",
     "vue-toastification": "1.7.8",
     "vue-tour": "1.5.0",
     "vue-tree-halower": "1.8.3",

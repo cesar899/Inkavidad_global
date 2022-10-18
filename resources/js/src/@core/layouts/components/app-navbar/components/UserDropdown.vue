@@ -124,6 +124,7 @@
 import {
   BNavItemDropdown, BDropdownItem, BDropdownDivider, BAvatar,
 } from 'bootstrap-vue'
+import { mapMutations } from 'vuex'
 import { initialAbility } from '@/libs/acl/config'
 import useJwt from '@/auth/jwt/useJwt'
 import { avatarText } from '@core/utils/filter'
@@ -137,25 +138,53 @@ export default {
   },
   data() {
     return {
-      userData: JSON.parse(localStorage.getItem('userData')),
+      userData: JSON.parse(localStorage.getItem('userData')) || {
+        fullName: '',
+        username: '',
+        role: '',
+        avatar: '',
+      },
+      token: sessionStorage.getItem('jwt'),
       avatarText,
     }
   },
   methods: {
+    ...mapMutations({
+        tokenMutation: 'auth/setToken',
+        roleMutation: 'auth/setRole'
+    }),
     logout() {
-      // Remove userData from localStorage
-      // ? You just removed token from localStorage. If you like, you can also make API call to backend to blacklist used token
-      localStorage.removeItem(useJwt.jwtConfig.storageTokenKeyName)
-      localStorage.removeItem(useJwt.jwtConfig.storageRefreshTokenKeyName)
+      this.$http.post('/api/logout', {
+        headers: {'Authorization' : `Bearer ${this.token}`}
+      })
+      .then(res => {
+        this.tokenMutation(null)
+        this.roleMutation(null)
+        localStorage.removeItem('jwt')
+        localStorage.removeItem('role')
+        this.$router.push('login')
+      })
+      .catch(e => {
+        this.tokenMutation(null)
+        this.roleMutation(null)
+        localStorage.removeItem('jwt')
+        localStorage.removeItem('role')
+        this.$router.push('login')
+      })
 
-      // Remove userData from localStorage
-      localStorage.removeItem('userData')
+      // // Remove userData from localStorage
+      // // ? You just removed token from localStorage. If you like, you can also make API call to backend to blacklist used token
+      // localStorage.removeItem(useJwt.jwtConfig.storageTokenKeyName)
+      // localStorage.removeItem(useJwt.jwtConfig.storageRefreshTokenKeyName)
 
-      // Reset ability
-      this.$ability.update(initialAbility)
+      // // Remove userData from localStorage
+      // localStorage.removeItem('userData')
 
-      // Redirect to login page
-      this.$router.push({ name: 'auth-login' })
+      // // Reset ability
+      // this.$ability.update(initialAbility)
+
+      // // Redirect to login page
+      // this.$router.push({ name: 'auth-login' })
     },
   },
 }
