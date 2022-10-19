@@ -88,3 +88,5 @@ Route::controller(PasswordResetController::class)->group(
     Route::get('/prueba/sale', [SaleController::class, 'index']);
 
 
+Route::get('/prueba/order', [OrderController::class, 'showOrder']);
+Route::get('/prueba/sale', [SaleController::class, 'index']);
