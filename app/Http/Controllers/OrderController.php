@@ -24,6 +24,14 @@ class OrderController extends Controller
 
         if($request->amount !== 0){
 
+            $day = Carbon::now();
+            $day_payment =  $day->addDay($request->paid_comming);
+
+            $lote = Batch::where('id', $request->batch_id)->first();
+            $amountTotal = $lote->amount;
+            $dues = $amountTotal - $request->amount;
+            $account_cuote = $amountTotal / $request->amount ;
+
 
 
             $sale = new Sale();
@@ -31,13 +39,13 @@ class OrderController extends Controller
             $sale->seller_id = $request->seller;
             $sale->batch_id = $request->batch_id;;
             $sale->status = 0;
-            $sale->amount = $request->amount;
-            $sale->amount_paid = 200;
-            $sale->cuote_account = 5;
+            $sale->amount = $amountTotal;
+            $sale->amount_paid = $request->amount;
+            $sale->cuote_account = $account_cuote;
             $sale->cuote_paid = 1;
-            $sale->paid_comming = 5;
-            $sale->dues = 5;
-            $sale->next_pay = Carbon::now();
+            $sale->paid_comming = $request->paid_comming;
+            $sale->dues = $dues;
+            $sale->next_pay = $day_payment;
             $sale->save();
 
             $order = new Order();
